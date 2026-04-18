@@ -1,19 +1,28 @@
 import { useCallback, useRef, useState } from "react";
-import beforeImage from "@/assets/before.png";
-import afterImage from "@/assets/after.png";
 
 function clampPercentage(value: number) {
   return Math.min(100, Math.max(0, value));
 }
 
-export function BeforeAfterSlider() {
+interface BeforeAfterSliderProps {
+  before: string;
+  after: string;
+  beforeLabel?: string;
+  afterLabel?: string;
+}
+
+export function BeforeAfterSlider({
+  before,
+  after,
+  beforeLabel = "Before",
+  afterLabel = "After",
+}: BeforeAfterSliderProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [position, setPosition] = useState(50);
 
   const setFromClientX = useCallback((clientX: number) => {
     const el = containerRef.current;
     if (!el) return;
-
     const rect = el.getBoundingClientRect();
     const next = ((clientX - rect.left) / rect.width) * 100;
     setPosition(clampPercentage(next));
@@ -28,7 +37,7 @@ export function BeforeAfterSlider() {
       aria-valuemax={100}
       aria-valuenow={Math.round(position)}
       tabIndex={0}
-      className="relative h-full w-full cursor-ew-resize touch-none select-none overflow-hidden rounded-xl shadow-luxury outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      className="relative h-full w-full cursor-ew-resize touch-none select-none overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       onPointerDown={(e) => {
         e.currentTarget.setPointerCapture(e.pointerId);
         setFromClientX(e.clientX);
@@ -38,63 +47,47 @@ export function BeforeAfterSlider() {
         setFromClientX(e.clientX);
       }}
       onPointerUp={(e) => {
-        if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
-
-        try {
-          e.currentTarget.releasePointerCapture(e.pointerId);
-        } catch {}
+        try { e.currentTarget.releasePointerCapture(e.pointerId); } catch {}
       }}
       onPointerCancel={(e) => {
         try {
-          if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+          if (e.currentTarget.hasPointerCapture(e.pointerId))
             e.currentTarget.releasePointerCapture(e.pointerId);
-          }
         } catch {}
       }}
       onKeyDown={(e) => {
         const step = e.shiftKey ? 10 : 5;
-
-        if (e.key === "ArrowLeft") {
-          e.preventDefault();
-          setPosition((current) => clampPercentage(current - step));
-        }
-
-        if (e.key === "ArrowRight") {
-          e.preventDefault();
-          setPosition((current) => clampPercentage(current + step));
-        }
+        if (e.key === "ArrowLeft") { e.preventDefault(); setPosition((c) => clampPercentage(c - step)); }
+        if (e.key === "ArrowRight") { e.preventDefault(); setPosition((c) => clampPercentage(c + step)); }
       }}
     >
+      {/* After layer (base) */}
       <div className="absolute inset-0">
-        <img
-          src={afterImage}
-          alt="After treatment"
-          className="h-full w-full object-cover"
-          draggable={false}
-        />
-        <div className="pointer-events-none absolute left-4 top-4 rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white">
-          After
+        <img src={after} alt={afterLabel} className="h-full w-full object-cover" draggable={false} />
+        <div className="pointer-events-none absolute bottom-5 right-5 bg-accent px-3 py-1.5 text-[9px] font-black tracking-[0.3em] text-accent-foreground uppercase">
+          {afterLabel}
         </div>
       </div>
 
+      {/* Before layer (clipped) */}
       <div className="absolute inset-0 overflow-hidden" style={{ width: `${position}%` }}>
-        <img
-          src={beforeImage}
-          alt="Before treatment"
-          className="h-full w-full object-cover"
-          draggable={false}
-        />
-        <div className="pointer-events-none absolute left-4 top-4 rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white">
-          Before
+        <img src={before} alt={beforeLabel} className="h-full w-full object-cover" draggable={false} />
+        <div className="pointer-events-none absolute bottom-5 left-5 bg-foreground/80 backdrop-blur-sm px-3 py-1.5 text-[9px] font-black tracking-[0.3em] text-background uppercase">
+          {beforeLabel}
         </div>
       </div>
 
-      <div className="absolute bottom-0 top-0 w-1 bg-background" style={{ left: `${position}%` }}>
-        <div className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-foreground bg-background shadow-lg">
-          <div className="flex gap-1" aria-hidden="true">
-            <div className="h-4 w-0.5 bg-foreground" />
-            <div className="h-4 w-0.5 bg-foreground" />
-          </div>
+      {/* Divider line */}
+      <div
+        className="absolute inset-y-0 w-px bg-white/80 shadow-[0_0_8px_rgba(0,0,0,0.3)]"
+        style={{ left: `${position}%` }}
+      >
+        {/* Handle */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-xl border border-border">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M5 4L1 8L5 12" stroke="hsl(210,17%,13%)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M11 4L15 8L11 12" stroke="hsl(210,17%,13%)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </div>
       </div>
     </div>

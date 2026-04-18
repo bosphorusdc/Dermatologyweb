@@ -4,96 +4,102 @@ export interface Service {
   description: string;
   fullDescription: string;
   benefits: string[];
+  images?: {
+    before?: string;
+    after?: string;
+    gallery?: string[];
+    videos?: string[];
+  };
 }
 
 export const services: Service[] = [
   {
-    slug: "adult-dermatology",
-    title: "Adult Dermatology",
-    description: "A comprehensive medical science that consists of diagnosing conditions of the skin, hair, and nails.",
-    fullDescription: "Adult Dermatology is a comprehensive medical science that consists of diagnosing conditions of the skin, hair, and nails. We take a comprehensive approach to treating a variety of conditions, ensuring personalized care for each patient's unique dermatological needs.",
+    slug: "acne",
+    title: "Acne Treatment",
+    description: "Targeted clinical treatments to reduce acne, prevent breakouts, and restore clear, healthy skin.",
+    fullDescription: "Acne is one of the most common skin conditions, affecting people of all ages. Our clinical acne treatments are tailored to your skin type and severity, combining medical-grade procedures with expert guidance to reduce active breakouts, minimize scarring, and prevent future flare-ups. We address the root causes of acne for long-lasting results.",
     benefits: [
-      "Comprehensive skin, hair, and nail diagnosis",
-      "Personalized treatment plans",
-      "Expert medical care",
-      "Advanced diagnostic techniques",
-      "Holistic approach to skin health"
-    ]
+      "Reduces active breakouts",
+      "Minimizes acne scarring",
+      "Prevents future flare-ups",
+      "Tailored to your skin type",
+      "Medical-grade procedures",
+      "Long-lasting results"
+    ],
+    images: {
+      gallery: [
+        new URL("../assets/Acne/photo_2026-03-25_21-35-51.jpg", import.meta.url).href,
+        new URL("../assets/Acne/photo_2026-03-25_21-36-00.jpg", import.meta.url).href,
+        new URL("../assets/Acne/photo_2026-03-25_21-36-22.jpg", import.meta.url).href,
+      ],
+      videos: [
+        new URL("../assets/Acne/IMG_3029.MOV", import.meta.url).href,
+        new URL("../assets/Acne/IMG_3030.MOV", import.meta.url).href,
+        new URL("../assets/Acne/IMG_3031.MOV", import.meta.url).href,
+      ],
+    },
   },
   {
-    slug: "hair-transplant",
-    title: "Hair Transplant For Hair/Beard/Eyebrows",
-    description: "FUE hair transplantation for head, beard, and eyebrows - a sutureless method with natural-looking results.",
-    fullDescription: "Hair Transplantation is a surgical technique that removes hair follicles by Follicular Unit Extraction (FUE). It is a sutureless method of hair restoration in which hair follicles are extracted from the back of head called the 'Donor Site' under local anaesthesia with the help of special micropunches and implanted in the bald area known as the 'Recipient Site'. The technique is primarily used to treat male/female pattern baldness on head, eyebrows, and beard hair.",
+    slug: "dandruff-treatment",
+    title: "Dandruff Treatment",
+    description: "Professional scalp treatments to eliminate dandruff, reduce flaking, and restore a healthy scalp.",
+    fullDescription: "Dandruff is a chronic scalp condition that causes flaking and itching. Our professional dandruff treatments go beyond over-the-counter solutions, targeting the underlying causes such as fungal overgrowth, seborrheic dermatitis, or dry scalp. We provide medically supervised protocols to restore scalp health and prevent recurrence.",
     benefits: [
-      "Less Maintenance",
-      "A Long-Term Solution",
-      "Free Of Pain And Scars",
-      "Natural-Looking",
-      "Enhancement of Appearance",
-      "Success Rate Is High",
-      "Low Risk Of Side Effects",
-      "Complications Are Unlikely To Occur",
-      "No Long-Term Medications Required",
-      "Quick Recovery"
-    ]
+      "Eliminates dandruff at the source",
+      "Reduces scalp flaking and itching",
+      "Treats seborrheic dermatitis",
+      "Restores scalp microbiome balance",
+      "Prevents recurrence",
+      "Medically supervised protocol"
+    ],
+    images: {
+      before: new URL("../assets/Dandruff treatment before and after/photo_2026-03-25_13-15-25.jpg", import.meta.url).href,
+      after: new URL("../assets/Dandruff treatment before and after/photo_2026-03-25_13-15-34.jpg", import.meta.url).href,
+    },
   },
   {
-    slug: "hydrafacial",
-    title: "Hydrafacial",
-    description: "Noninvasive procedure that resurfaces, exfoliates, deep cleans and hydrates skin with nourishing serums.",
-    fullDescription: "This is a noninvasive procedure that can help resurface, exfoliate, deep clean and hydrate skin. The exfoliation and extraction steps of the Hydrafacial help to remove dead skin cells and debris, while the infusion of nourishing serums promotes cell renewal and improves skin texture, resulting in a more refined and balanced appearance. It can help prevent and treat skin conditions like acne, premature aging, wrinkles, fine lines, skin dehydration, dark spots, and also helps product to penetrate to the skin as it cleans deeply and opens clogged pores. The skin will be drenched in a blend of antioxidants, peptides, and hyaluronic acid, resulting in a deeply hydrated and plump appearance. The intense hydration provided by the Hydrafacial helps to restore moisture balance and enhance your skin's overall health and vitality. The hydrating serums used during the procedure can help diminish the appearance of fine lines and wrinkles, giving you a more youthful and rejuvenated look.",
+    slug: "fat-removal",
+    title: "Fat Removal",
+    description: "Non-surgical body contouring treatments to target stubborn fat deposits and reshape your silhouette.",
+    fullDescription: "Our non-surgical fat removal treatments use advanced technology to break down and eliminate stubborn fat cells that resist diet and exercise. Using the G5 gyratory massage system and complementary body contouring techniques, we target specific areas to reduce fat deposits, improve circulation, and tone the skin — with no surgery and no downtime.",
     benefits: [
-      "Immediate visible results",
-      "Deep cleansing and exfoliation",
-      "Treats multiple skin concerns",
-      "No downtime",
-      "Hydrates and plumps skin",
-      "Reduces fine lines and wrinkles",
-      "Improves skin texture and tone"
-    ]
-  },
-  {
-    slug: "microneedling",
-    title: "Dermapen / Microneedling",
-    description: "Cosmetic procedure using sterilized needles to generate new collagen and improve skin texture.",
-    fullDescription: "Microneedling is a cosmetic procedure that uses small, sterilized needles to prick the skin. This treatment aims to generate new collagen and skin tissue to smooth, firm, and tone skin. Microneedling is mostly used on the face and may reduce the appearance of acne, scars, dark spots, wrinkles, and large pores, aids the absorption of topical skin care products & improves overall health of skin.",
-    benefits: [
-      "Generates new collagen",
-      "Reduces acne scars",
-      "Minimizes dark spots and wrinkles",
-      "Shrinks large pores",
-      "Enhances product absorption",
-      "Improves overall skin health"
-    ]
-  },
-  {
-    slug: "vampire-facial",
-    title: "Plasma Vampire Facial",
-    description: "Non-surgical treatment using your own plasma to regenerate and rejuvenate facial skin.",
-    fullDescription: "The Vampire Facial is a non-surgical and minimally invasive treatment. The procedure involves creating tiny puncture holes on your face, stimulating the regenerating plasma production into the skin. A Vampire Facial is a relatively painless experience that harnesses your body's natural healing powers.",
-    benefits: [
-      "Reduce wrinkles",
-      "Plump up sagging skin",
-      "Get rid of deep creases",
-      "Improve one's complexion",
       "Non-surgical approach",
-      "Minimally invasive"
-    ]
+      "Targets stubborn fat deposits",
+      "Reduces cellulite",
+      "Improves circulation",
+      "Skin toning and firming",
+      "No downtime",
+      "Slimming and body contouring"
+    ],
+    images: {
+      videos: [
+        new URL("../assets/Fat removal/IMG_4487.MOV", import.meta.url).href,
+        new URL("../assets/Fat removal/IMG_4488.MOV", import.meta.url).href,
+        new URL("../assets/Fat removal/IMG_4489.MOV", import.meta.url).href,
+        new URL("../assets/Fat removal/IMG_4491.MOV", import.meta.url).href,
+        new URL("../assets/Fat removal/IMG_4492.MOV", import.meta.url).href,
+        new URL("../assets/Fat removal/IMG_4493.MOV", import.meta.url).href,
+        new URL("../assets/Fat removal/IMG_4498.MOV", import.meta.url).href,
+      ],
+    },
   },
   {
-    slug: "dermaplaning",
-    title: "Dermaplaning",
-    description: "Minimally invasive procedure that shaves away top skin layers to reveal fresher, smoother skin.",
-    fullDescription: "Dermaplaning is a minimally invasive procedure that shaves away the top layers of your skin. It can help reduce the appearance of acne scars, pitted skin or other skin imperfections by revealing newer, undamaged skin. Some people get dermaplaning to remove unwanted facial hair.",
+    slug: "melasma",
+    title: "Melasma Treatment",
+    description: "Specialized treatments to reduce hyperpigmentation and even out skin tone caused by melasma.",
+    fullDescription: "Melasma is a common skin condition that causes brown or grey-brown patches, typically on the face. It is often triggered by sun exposure, hormonal changes, or genetics. Our specialized melasma protocols combine clinical-grade treatments with targeted skincare to reduce hyperpigmentation, even out skin tone, and prevent recurrence with long-term management strategies.",
     benefits: [
-      "Reduces acne scars",
-      "Smooths pitted skin",
-      "Removes facial hair",
-      "Reveals fresher skin",
-      "Minimally invasive",
-      "Immediate results"
-    ]
+      "Reduces brown and grey patches",
+      "Evens out skin tone",
+      "Targets hyperpigmentation",
+      "Hormonal and sun-triggered melasma",
+      "Prevents recurrence",
+      "Personalized treatment protocol"
+    ],
+    images: {
+      before: new URL("../assets/Melasma before & after/photo_2026-03-25_13-09-53.jpg", import.meta.url).href,
+      after: new URL("../assets/Melasma before & after/photo_2026-03-25_13-10-10.jpg", import.meta.url).href,
+    },
   },
   {
     slug: "microdermabrasion",
@@ -108,56 +114,46 @@ export const services: Service[] = [
       "Reduce fine lines and wrinkles",
       "Reduce enlarged pores",
       "Treat acne and acne scars"
-    ]
+    ],
+    images: {
+      videos: [
+        new URL("../assets/Microdermabrasion/IMG_5303.MOV", import.meta.url).href,
+        new URL("../assets/Microdermabrasion/IMG_5304.MOV", import.meta.url).href,
+        new URL("../assets/Microdermabrasion/IMG_5305.MOV", import.meta.url).href,
+        new URL("../assets/Microdermabrasion/IMG_5306.MOV", import.meta.url).href,
+        new URL("../assets/Microdermabrasion/IMG_5307.MOV", import.meta.url).href,
+        new URL("../assets/Microdermabrasion/IMG_5308.MOV", import.meta.url).href,
+        new URL("../assets/Microdermabrasion/IMG_5309.MOV", import.meta.url).href,
+        new URL("../assets/Microdermabrasion/IMG_5310.MOV", import.meta.url).href,
+        new URL("../assets/Microdermabrasion/IMG_5311.MOV", import.meta.url).href,
+        new URL("../assets/Microdermabrasion/IMG_5312.MOV", import.meta.url).href,
+      ],
+    },
   },
   {
-    slug: "led-light-therapy",
-    title: "LED Light Therapy",
-    description: "Skin-safe, low-level light treatment in different wavelengths and colors for various skin conditions.",
-    fullDescription: "LED Light Therapy is a skin treatment that doesn't use ultraviolet light. Instead, it uses skin-safe, low-level light in different wavelengths and colors for different skin-related conditions. Treatment options include blue light, red light, green light, yellow light, and white light, each targeting specific skin concerns.",
+    slug: "microneedling",
+    title: "Microneedling",
+    description: "Cosmetic procedure using sterilized needles to generate new collagen and improve skin texture.",
+    fullDescription: "Microneedling is a cosmetic procedure that uses small, sterilized needles to prick the skin. This treatment aims to generate new collagen and skin tissue to smooth, firm, and tone skin. Microneedling is mostly used on the face and may reduce the appearance of acne, scars, dark spots, wrinkles, and large pores, aids the absorption of topical skin care products & improves overall health of skin.",
     benefits: [
-      "Non-UV light treatment",
-      "Multiple wavelength options",
-      "Treats various skin conditions",
-      "Safe and non-invasive",
-      "No downtime",
-      "Customizable to skin needs"
-    ]
+      "Generates new collagen",
+      "Reduces acne scars",
+      "Minimizes dark spots and wrinkles",
+      "Shrinks large pores",
+      "Enhances product absorption",
+      "Improves overall skin health"
+    ],
+    images: {
+      videos: [
+        new URL("../assets/microneedling/IMG_4073.MOV", import.meta.url).href,
+      ],
+    },
   },
   {
-    slug: "electrocautery",
-    title: "Electrocautery",
-    description: "Electric-heated electrode procedure to destroy unwanted skin growths safely and effectively.",
-    fullDescription: "Electrocautery is a procedure that uses electric-heated electrodes to destroy unwanted skin growth. This simple procedure can be done in outpatient or clinical setting. Some of the indications include: DPN, Skin Tag, Mole, Warts, and Vascular Lesions.",
-    benefits: [
-      "Removes DPN effectively",
-      "Safe mole removal",
-      "Treats warts",
-      "Removes skin tags",
-      "Treats vascular lesions",
-      "Outpatient procedure",
-      "Quick and effective"
-    ]
-  },
-  {
-    slug: "laser-hair-removal",
-    title: "Laser Hair Removal",
-    description: "Diode laser technology for permanent hair reduction, effective on dark skin and dark hair.",
-    fullDescription: "Diode Lasers Hair Removals use a single wavelength of light that has a high absorption rate in melanin. As the melanin heats up it destroys the root and blood flow to the follicle disabling the hair growth permanently. Diode Laser Removals are the popular laser wavelengths that work for dark skin and dark hair. The Diode wavelength is very effective on darker skin tones.",
-    benefits: [
-      "Best way to get rid of unwanted hair",
-      "Leaves the skin undamaged",
-      "Long term or permanent hair reduction",
-      "Less painful than waxing",
-      "Removes hair from any part of the body",
-      "Effective on darker skin tones"
-    ]
-  },
-  {
-    slug: "prp-therapy",
-    title: "Platelet-Rich Plasma (PRP) For Hair/Eyebrows/Beard",
-    description: "PRP injections to prevent hair loss and promote new hair growth on head, eyebrows, and beard.",
-    fullDescription: "Platelet-Rich Plasma consists of two elements: Plasma or the liquid portion of blood, and platelets. PRP injections can be effective in preventing and treating hair loss and promoting new hair growth both in male/female pattern baldness on head, eyebrows and beard. PRP can also aid in the stimulation of hair growth after hair transplants.",
+    slug: "prp",
+    title: "PRP Therapy",
+    description: "Platelet-Rich Plasma injections to stimulate hair growth and rejuvenate skin naturally.",
+    fullDescription: "Platelet-Rich Plasma (PRP) therapy uses your own blood's growth factors to stimulate natural healing and regeneration. PRP injections are effective for preventing and treating hair loss, promoting new hair growth on the head, eyebrows, and beard, and for facial rejuvenation. The procedure is safe, natural, and uses your body's own biology to deliver results.",
     benefits: [
       "Prevents and treats hair loss",
       "Promotes new hair growth",
@@ -165,38 +161,94 @@ export const services: Service[] = [
       "Aids post-transplant hair growth",
       "Uses your own blood",
       "Natural treatment approach"
-    ]
+    ],
+    images: {
+      videos: [
+        new URL("../assets/prp/IMG_4516.MOV", import.meta.url).href,
+        new URL("../assets/prp/IMG_4517.MOV", import.meta.url).href,
+        new URL("../assets/prp/IMG_4518.MOV", import.meta.url).href,
+        new URL("../assets/prp/IMG_4519.MOV", import.meta.url).href,
+        new URL("../assets/prp/IMG_4520.MOV", import.meta.url).href,
+        new URL("../assets/prp/IMG_4521.MOV", import.meta.url).href,
+        new URL("../assets/prp/IMG_4522.MOV", import.meta.url).href,
+      ],
+    },
   },
   {
-    slug: "g5-massage",
-    title: "G5 Massage",
-    description: "Gyratory soft tissue massage using vibration and percussion to stimulate healing and reduce cellulite.",
-    fullDescription: "Deep Tissue Massages the (G5) works by creating a gyratory soft tissue massage effect on muscles and deeper tissues. Simultaneously, it uses vibration and percussion to increase blood flow and to stimulate a range of healing processes. The combined free movement achieved by the G5 Machine makes it unique in its effect.",
+    slug: "skin-bacteria-infection",
+    title: "Skin Bacteria Infection",
+    description: "Clinical diagnosis and treatment of bacterial skin infections to restore healthy, clear skin.",
+    fullDescription: "Bacterial skin infections can range from mild surface conditions to deeper tissue involvement. Our dermatologists provide accurate diagnosis and targeted treatment plans for a wide range of bacterial skin infections, including impetigo, folliculitis, cellulitis, and more. Early and precise treatment prevents complications and promotes rapid recovery.",
     benefits: [
-      "Reduce cellulite",
-      "Prevent sports massage",
-      "Slimming",
-      "Improves and increases circulation",
-      "Drains excess tissue fluid, waste and toxins",
-      "Skin toning",
-      "Improves skin texture",
-      "Reduces muscular tension - relieving aches & pains"
-    ]
+      "Accurate clinical diagnosis",
+      "Targeted antibiotic protocols",
+      "Treats surface and deep infections",
+      "Prevents complications",
+      "Rapid recovery support",
+      "Follow-up care included"
+    ],
+    images: {
+      before: new URL("../assets/skinbacteria infection b and f/photo_2026-03-25_13-18-56.jpg", import.meta.url).href,
+      after: new URL("../assets/skinbacteria infection b and f/photo_2026-03-25_13-19-08.jpg", import.meta.url).href,
+    },
   },
   {
-    slug: "skincare-consultation",
-    title: "Skin Care And Product Consultation",
-    description: "Professional consultation to identify your skin type and determine the best products for your needs.",
-    fullDescription: "A Skincare Consultation is an invaluable tool for helping you identify your skin type, and concerns, and determining the best products to use. It helps you gain a better understanding of your skin's needs while taking into account factors like lifestyle and environment that can impact the health of your skin.",
+    slug: "tattoo-removal",
+    title: "Tattoo Removal",
+    description: "Advanced laser tattoo removal to safely and effectively fade or fully remove unwanted tattoos.",
+    fullDescription: "Our tattoo removal treatments use advanced laser technology to break down tattoo ink particles beneath the skin, allowing the body to naturally eliminate them over time. The procedure is effective on a wide range of ink colors and skin types, with each session progressively fading the tattoo. A personalized treatment plan is created based on tattoo size, color, and skin type.",
     benefits: [
-      "Identify your skin type",
-      "Personalized product recommendations",
-      "Understanding of skin needs",
-      "Lifestyle and environment considerations",
-      "Professional guidance",
-      "Optimized skincare routine"
-    ]
-  }
+      "Effective on multiple ink colors",
+      "Safe for various skin types",
+      "Progressive fading with each session",
+      "Personalized treatment plan",
+      "Minimal scarring risk",
+      "Full or partial removal options"
+    ],
+    images: {
+      videos: [
+        new URL("../assets/Tattoo removal/IMG_4374.MOV", import.meta.url).href,
+        new URL("../assets/Tattoo removal/IMG_4376.MOV", import.meta.url).href,
+        new URL("../assets/Tattoo removal/IMG_4377.MOV", import.meta.url).href,
+        new URL("../assets/Tattoo removal/IMG_4378.MOV", import.meta.url).href,
+        new URL("../assets/Tattoo removal/IMG_4379.MOV", import.meta.url).href,
+        new URL("../assets/Tattoo removal/IMG_4380.MOV", import.meta.url).href,
+        new URL("../assets/Tattoo removal/IMG_4383.MOV", import.meta.url).href,
+        new URL("../assets/Tattoo removal/IMG_4384.MOV", import.meta.url).href,
+        new URL("../assets/Tattoo removal/IMG_4385.MOV", import.meta.url).href,
+        new URL("../assets/Tattoo removal/IMG_4386.MOV", import.meta.url).href,
+        new URL("../assets/Tattoo removal/IMG_4388.MOV", import.meta.url).href,
+        new URL("../assets/Tattoo removal/IMG_4389.MOV", import.meta.url).href,
+        new URL("../assets/Tattoo removal/IMG_4390.MOV", import.meta.url).href,
+      ],
+    },
+  },
+  {
+    slug: "vitiligo",
+    title: "Vitiligo Treatment",
+    description: "Specialized treatments to manage vitiligo and restore pigmentation to affected skin areas.",
+    fullDescription: "Vitiligo is a long-term skin condition characterized by patches of skin losing their pigment. While there is no universal cure, our specialized vitiligo treatments aim to slow the progression, restore pigmentation where possible, and improve the overall appearance of affected areas. We offer a range of evidence-based therapies tailored to each patient's condition and goals.",
+    benefits: [
+      "Slows progression of pigment loss",
+      "Restores pigmentation in affected areas",
+      "Evidence-based treatment protocols",
+      "Tailored to condition severity",
+      "Improves skin appearance",
+      "Ongoing management support"
+    ],
+    images: {
+      before: new URL("../assets/Vitiligo/photo_2026-03-25_13-11-12.jpg", import.meta.url).href,
+      after: new URL("../assets/Vitiligo/photo_2026-03-25_13-11-23.jpg", import.meta.url).href,
+      gallery: [
+        new URL("../assets/Vitiligo/photo_2026-03-25_13-11-28.jpg", import.meta.url).href,
+      ],
+      videos: [
+        new URL("../assets/Vitiligo/IMG_6406.MOV", import.meta.url).href,
+        new URL("../assets/Vitiligo/IMG_6408.MOV", import.meta.url).href,
+        new URL("../assets/Vitiligo/IMG_6409.MOV", import.meta.url).href,
+      ],
+    },
+  },
 ];
 
 export const featuredServices = services.slice(0, 3);
