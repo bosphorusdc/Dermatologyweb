@@ -2,188 +2,214 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronLeft } from "lucide-react";
 import { services } from "@/data/services";
 
 const ServiceDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const service = services.find((s) => s.slug === slug);
+  const serviceIndex = services.findIndex((s) => s.slug === slug);
 
-  if (!service) {
-    return <Navigate to="/services" replace />;
-  }
+  if (!service) return <Navigate to="/services" replace />;
 
-  const hasBeforeAfter = service.images?.before && service.images?.after;
-  const hasVideos = service.images?.videos && service.images.videos.length > 0;
-  const hasGallery = service.images?.gallery && service.images.gallery.length > 0;
-  const hasAnyMedia = hasBeforeAfter || hasVideos || hasGallery;
+  const hasBeforeAfter = !!(service.images?.before && service.images?.after);
+  const hasVideos      = !!(service.images?.videos?.length);
+  const hasGallery     = !!(service.images?.gallery?.length);
+
+  // Hero media: prefer after photo, then first video, then gallery
+  const heroMedia = service.images?.after ?? service.images?.before ?? service.images?.gallery?.[0];
+  const heroVideo  = !heroMedia && hasVideos ? service.images!.videos![0] : null;
+
+  // Related services (prev/next)
+  const prev = services[serviceIndex - 1];
+  const next = services[serviceIndex + 1];
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
 
-      {/* ── Creative Detail Hero ── */}
-      <section className="pt-48 pb-24 bg-background overflow-hidden relative">
-        <div className="absolute top-20 right-0 opacity-[0.03] select-none pointer-events-none">
-          <span className="text-[12rem] font-heading font-black tracking-tighter uppercase whitespace-nowrap">
-            {service.title.split(' ')[0]}
-          </span>
-        </div>
+      {/* ── Hero ── */}
+      <section className="relative h-[70vh] min-h-[520px] flex items-end overflow-hidden">
+        {/* Media */}
+        {heroMedia ? (
+          <img src={heroMedia} alt={service.title} className="absolute inset-0 w-full h-full object-cover" />
+        ) : heroVideo ? (
+          <video src={heroVideo} autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" />
+        ) : (
+          <div className="absolute inset-0 bg-muted" />
+        )}
 
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-5xl">
-            <div className="flex items-center gap-4 mb-8 animate-fade-up">
-              <span className="text-[10px] font-black tracking-[0.5em] text-accent uppercase">
-                Treatment Profile
-              </span>
-              <div className="h-px w-20 bg-accent/20" />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(210,17%,8%)] via-[hsl(210,17%,8%)]/50 to-transparent" />
+
+        {/* Back link */}
+        <Link
+          to="/services"
+          className="absolute top-24 left-6 md:left-12 z-10 flex items-center gap-2 text-white/60 hover:text-white text-[10px] font-black tracking-[0.3em] uppercase transition-colors group"
+        >
+          <ChevronLeft className="h-3.5 w-3.5 group-hover:-translate-x-0.5 transition-transform" />
+          All Services
+        </Link>
+
+        <div className="relative z-10 container mx-auto px-6 pb-16">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-3 mb-6 animate-fade-up">
+              <div className="h-px w-8 bg-accent/70" />
+              <span className="text-[9px] font-black tracking-[0.5em] text-accent uppercase">Treatment Profile</span>
             </div>
-
-            <h1 className="font-heading text-6xl md:text-8xl font-light tracking-tighter text-foreground leading-[0.95] animate-fade-up">
-              {service.title.split(' ').map((word, i) => (
-                <span key={i} className={i % 2 !== 0 ? "italic text-muted-foreground pr-4" : "font-medium pr-4"}>
-                  {word}{' '}
-                </span>
-              ))}
+            <h1
+              className="font-heading text-5xl md:text-7xl font-light tracking-tighter text-white leading-[0.92] animate-fade-up mb-6"
+              style={{ animationDelay: "80ms" }}
+            >
+              {service.title}
             </h1>
-
-            <p className="mt-12 text-xl text-muted-foreground font-light max-w-2xl leading-relaxed animate-fade-up" style={{ animationDelay: "100ms" }}>
+            <p
+              className="text-white/55 text-lg font-light leading-relaxed max-w-2xl animate-fade-up"
+              style={{ animationDelay: "160ms" }}
+            >
               {service.description}
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── Architectural Overview ── */}
-      <section className="py-24 bg-background border-t border-border">
+      {/* ── Overview ── */}
+      <section className="py-24 bg-background border-b border-border">
         <div className="container mx-auto px-6">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-20">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16">
 
-            {/* Description side */}
+            {/* Description */}
             <div className="lg:col-span-7 animate-fade-up">
-              <div className="flex items-center gap-3 mb-10">
-                <span className="text-[10px] font-black tracking-[0.4em] text-muted-foreground uppercase">Description</span>
-                <div className="h-px w-10 bg-border" />
+              <div className="flex items-center gap-3 mb-8">
+                <div className="h-px w-8 bg-accent" />
+                <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">About This Treatment</span>
               </div>
-              <p className="text-2xl text-foreground font-light leading-relaxed mb-12">
+              <p className="text-lg text-foreground/80 font-light leading-relaxed mb-14">
                 {service.fullDescription}
               </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+              {/* Benefits */}
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-px w-8 bg-border" />
+                <span className="text-[9px] font-black tracking-[0.4em] text-muted-foreground/60 uppercase">Key Benefits</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {service.benefits.map((benefit, i) => (
-                  <div key={i} className="flex items-start gap-4 group">
-                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent group-hover:scale-150 transition-transform" />
-                    <p className="text-foreground/70 font-medium tracking-tight text-sm uppercase">{benefit}</p>
+                  <div key={i} className="flex items-start gap-3 py-3 border-b border-border/50 last:border-0">
+                    <div className="mt-2 w-1 h-1 rounded-full bg-accent shrink-0" />
+                    <p className="text-sm text-foreground/70 font-light leading-snug">{benefit}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Visual side */}
-            <div className="lg:col-span-5 animate-fade-up" style={{ animationDelay: "200ms" }}>
-              <div className="relative">
-                <div className="absolute -inset-4 border border-border rounded-[3rem] -z-10 translate-x-8 translate-y-8" />
-                <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-luxury">
-                  {hasBeforeAfter ? (
-                    <img
-                      src={service.images!.after}
-                      alt={`${service.title} result`}
-                      className="w-full h-full object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-1000"
-                    />
-                  ) : hasVideos ? (
-                    <video
-                      src={service.images!.videos![0]}
-                      className="w-full h-full object-cover"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                    />
-                  ) : hasGallery ? (
-                    <img
-                      src={service.images!.gallery![0]}
-                      alt={`${service.title}`}
-                      className="w-full h-full object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-1000"
-                    />
-                  ) : (
-                    <img
-                      src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&auto=format&fit=crop"
-                      alt="Clinical environment"
-                      className="w-full h-full object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-1000"
-                    />
-                  )}
+            {/* Sidebar */}
+            <div className="lg:col-span-4 lg:col-start-9 animate-fade-up" style={{ animationDelay: "150ms" }}>
+              <div className="border border-border p-8 flex flex-col gap-8 sticky top-24">
+                <div>
+                  <p className="text-[9px] font-black tracking-[0.4em] text-muted-foreground/50 uppercase mb-3">Status</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-green-500" />
+                    <p className="text-sm text-foreground font-medium">Accepting new patients</p>
+                  </div>
                 </div>
-                {/* Floating label */}
-                <div className="absolute -bottom-8 -left-8 bg-foreground p-8 text-background shadow-2xl">
-                  <p className="text-[10px] font-black tracking-[0.4em] text-accent uppercase mb-4">Status</p>
-                  <p className="text-xl font-heading font-light italic text-background">Currently accepting new private patients.</p>
+
+                <div className="h-px bg-border" />
+
+                <div>
+                  <p className="text-[9px] font-black tracking-[0.4em] text-muted-foreground/50 uppercase mb-3">Treatment</p>
+                  <p className="text-sm text-foreground font-light">{service.title}</p>
+                </div>
+
+                <div className="h-px bg-border" />
+
+                <div className="flex flex-col gap-3">
+                  <Link to="/contact">
+                    <Button
+                      size="lg"
+                      className="w-full rounded-none h-12 bg-foreground hover:bg-foreground/90 text-background text-[10px] font-black tracking-[0.25em] transition-all hover:scale-[1.02] active:scale-[0.98] group shadow-none border-0"
+                    >
+                      BOOK CONSULTATION
+                      <ArrowRight className="ml-2 h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                  <Link to="/services">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="w-full rounded-none h-10 text-[10px] font-black tracking-[0.2em] uppercase border-border hover:border-accent/40 hover:bg-muted/30 shadow-none transition-all"
+                    >
+                      All Treatments
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* ── Clinical Results ── */}
-      {hasAnyMedia && (
-        <section className="py-32 bg-muted/30">
+      {/* ── Before / After ── */}
+      {hasBeforeAfter && (
+        <section className="py-24 bg-muted/30 border-b border-border">
           <div className="container mx-auto px-6">
-            <div className="max-w-4xl mx-auto text-center mb-20">
-              <div className="inline-block px-4 py-1.5 border border-accent/20 rounded-full mb-8">
-                <span className="text-[10px] font-black tracking-[0.3em] text-accent uppercase">
-                  Proven Efficacy
-                </span>
+            <div className="max-w-7xl mx-auto">
+              <div className="flex items-center gap-3 mb-12 animate-fade-up">
+                <div className="h-px w-8 bg-accent" />
+                <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Clinical Results</span>
               </div>
-              <h2 className="font-heading text-5xl font-medium tracking-tight text-foreground mb-6">
-                Clinical Results.
-              </h2>
-              <p className="text-muted-foreground font-light">
-                Observed results from our specialized clinical pathways.
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-up" style={{ animationDelay: "80ms" }}>
+                <div className="relative overflow-hidden h-[500px]">
+                  <img src={service.images!.before} alt="Before" className="w-full h-full object-cover" />
+                  <div className="absolute bottom-5 left-5 bg-foreground/80 backdrop-blur-sm px-4 py-2 text-[9px] font-black tracking-[0.3em] text-background uppercase">Before</div>
+                </div>
+                <div className="relative overflow-hidden h-[500px]">
+                  <img src={service.images!.after} alt="After" className="w-full h-full object-cover" />
+                  <div className="absolute bottom-5 right-5 bg-accent px-4 py-2 text-[9px] font-black tracking-[0.3em] text-accent-foreground uppercase">After</div>
+                </div>
+              </div>
+              <p className="text-[9px] text-muted-foreground/40 tracking-widest uppercase italic mt-8">
+                * Results photographed under standardised clinical lighting. Individual biological response varies.
               </p>
             </div>
+          </div>
+        </section>
+      )}
 
-            {/* Before / After images */}
-            {hasBeforeAfter && (
-              <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                <div className="relative group shadow-luxury overflow-hidden h-[500px]">
-                  <img
-                    src={service.images!.before}
-                    alt="Before"
-                    className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700"
-                  />
-                  <div className="absolute top-10 left-10 glass-effect px-4 py-2 text-[10px] font-black tracking-widest uppercase">Initial Condition</div>
-                </div>
-                <div className="relative group shadow-luxury overflow-hidden h-[500px]">
-                  <img
-                    src={service.images!.after}
-                    alt="After"
-                    className="w-full h-full object-cover grayscale-[0.1] group-hover:grayscale-0 transition-all duration-700"
-                  />
-                  <div className="absolute top-10 left-10 bg-accent px-4 py-2 text-accent-foreground text-[10px] font-black tracking-widest uppercase">Post-Protocol</div>
-                </div>
+      {/* ── Gallery ── */}
+      {hasGallery && (
+        <section className="py-24 bg-background border-b border-border">
+          <div className="container mx-auto px-6">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex items-center gap-3 mb-12 animate-fade-up">
+                <div className="h-px w-8 bg-accent" />
+                <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Gallery</span>
               </div>
-            )}
-
-            {/* Gallery images */}
-            {hasGallery && (
-              <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-16">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 animate-fade-up" style={{ animationDelay: "80ms" }}>
                 {service.images!.gallery!.map((src, i) => (
-                  <div key={i} className="relative group shadow-luxury overflow-hidden aspect-square">
-                    <img
-                      src={src}
-                      alt={`${service.title} result ${i + 1}`}
-                      className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                    />
+                  <div key={i} className="aspect-square overflow-hidden">
+                    <img src={src} alt={`${service.title} ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
                   </div>
                 ))}
               </div>
-            )}
+            </div>
+          </div>
+        </section>
+      )}
 
-            {/* Videos */}
-            {hasVideos && (
-              <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      {/* ── Videos ── */}
+      {hasVideos && (
+        <section className="py-24 bg-muted/20 border-b border-border">
+          <div className="container mx-auto px-6">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex items-center gap-3 mb-12 animate-fade-up">
+                <div className="h-px w-8 bg-accent" />
+                <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Procedure Videos</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-up" style={{ animationDelay: "80ms" }}>
                 {service.images!.videos!.map((src, i) => (
-                  <div key={i} className="relative group shadow-luxury overflow-hidden aspect-[9/16] rounded-2xl bg-black">
+                  <div key={i} className="aspect-[9/16] overflow-hidden bg-black">
                     <video
                       src={src}
                       className="w-full h-full object-cover"
@@ -195,37 +221,69 @@ const ServiceDetail = () => {
                   </div>
                 ))}
               </div>
-            )}
-
-            <p className="text-center text-[10px] text-muted-foreground mt-12 tracking-widest uppercase italic">
-              * Results photographed under standard clinical lighting. Individual biological response varies.
-            </p>
+            </div>
           </div>
         </section>
       )}
 
-      {/* ── Closing Call ── */}
-      <section className="py-40 bg-background text-center">
+      {/* ── CTA ── */}
+      <section className="py-32 bg-[hsl(210,17%,11%)]">
         <div className="container mx-auto px-6">
-          <h2 className="font-heading text-5xl md:text-7xl font-medium tracking-tighter text-foreground mb-12">
-            The <br className="hidden md:block" />
-            <span className="italic font-light text-muted-foreground">Restore.</span>
-          </h2>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <Link to="/contact">
-              <Button size="lg" className="bg-foreground hover:bg-foreground/90 text-background rounded-none h-16 px-12 text-[11px] font-black tracking-[0.2em] shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98]">
-                SECURE A CONSULTATION
-                <ArrowRight className="ml-3 h-4 w-4" />
-              </Button>
-            </Link>
-            <Link to="/services" className="text-muted-foreground hover:text-foreground font-bold tracking-widest text-[10px] uppercase group p-4">
-              Return to Catalog
-              <div className="h-px w-0 bg-accent group-hover:w-full transition-all duration-300" />
-            </Link>
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-7 animate-fade-up">
+              <h2 className="font-heading text-4xl md:text-6xl font-light tracking-tighter text-white leading-[0.95] mb-6">
+                Ready to start<br />
+                <span className="italic text-white/35">your</span>{" "}
+                <span className="font-medium">{service.title.split(" ")[0]} protocol?</span>
+              </h2>
+              <p className="text-white/45 font-light leading-relaxed max-w-lg">
+                Book a private consultation with one of our board-certified specialists. We'll assess your condition and design a protocol tailored specifically to you.
+              </p>
+            </div>
+            <div className="lg:col-span-4 lg:col-start-9 animate-fade-up" style={{ animationDelay: "120ms" }}>
+              <div className="flex flex-col gap-3">
+                <Link to="/contact">
+                  <Button size="lg" className="w-full rounded-none h-14 bg-accent hover:bg-accent/90 text-accent-foreground text-[11px] font-black tracking-[0.25em] transition-all hover:scale-[1.02] active:scale-[0.98] group border-0 shadow-none">
+                    BOOK CONSULTATION
+                    <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Link to="/services">
+                  <Button variant="ghost" size="lg" className="w-full rounded-none h-12 text-[10px] font-black tracking-[0.2em] text-white/50 hover:text-white hover:bg-white/5 uppercase border border-white/10 hover:border-white/20 transition-all">
+                    Browse All Treatments
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* ── Prev / Next ── */}
+      {(prev || next) && (
+        <section className="border-t border-border">
+          <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border">
+            {prev ? (
+              <Link to={`/services/${prev.slug}`} className="group flex items-center gap-6 p-10 hover:bg-muted/30 transition-colors">
+                <ChevronLeft className="h-5 w-5 text-muted-foreground group-hover:text-accent group-hover:-translate-x-1 transition-all shrink-0" />
+                <div>
+                  <p className="text-[9px] font-black tracking-[0.3em] text-muted-foreground/50 uppercase mb-1">Previous</p>
+                  <p className="font-heading text-lg font-light text-foreground group-hover:text-accent transition-colors">{prev.title}</p>
+                </div>
+              </Link>
+            ) : <div />}
+            {next ? (
+              <Link to={`/services/${next.slug}`} className="group flex items-center justify-end gap-6 p-10 hover:bg-muted/30 transition-colors text-right">
+                <div>
+                  <p className="text-[9px] font-black tracking-[0.3em] text-muted-foreground/50 uppercase mb-1">Next</p>
+                  <p className="font-heading text-lg font-light text-foreground group-hover:text-accent transition-colors">{next.title}</p>
+                </div>
+                <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-accent group-hover:translate-x-1 transition-all shrink-0" />
+              </Link>
+            ) : <div />}
+          </div>
+        </section>
+      )}
 
       <Footer />
     </div>
