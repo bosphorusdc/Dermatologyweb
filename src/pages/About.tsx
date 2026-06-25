@@ -1,8 +1,15 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Link } from "react-router-dom";
-import { ArrowRight, ShieldCheck, Stethoscope, Zap, Globe } from "lucide-react";
+import { ArrowRight, ShieldCheck, Stethoscope, Microscope, HeartPulse, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  CLINIC_OVERVIEW,
+  CLINIC_VISION,
+  CLINIC_MISSION,
+  CLINICAL_APPROACH,
+  WHY_CHOOSE_US,
+} from "@/data/clinic";
 
 // Clinic images
 const img1  = new URL("../assets/Images/photo_1_2026-03-25_21-38-08.jpg",  import.meta.url).href;
@@ -19,23 +26,28 @@ const img10 = new URL("../assets/Images/photo_10_2026-03-25_21-38-08.jpg", impor
 const pillars = [
   {
     icon: Stethoscope,
-    title: "Clinical Roots",
-    text: "Founded by board-certified specialists with decades of experience in international diagnostic standard centers.",
+    title: WHY_CHOOSE_US[0].title,
+    text: WHY_CHOOSE_US[0].text,
+  },
+  {
+    icon: Microscope,
+    title: WHY_CHOOSE_US[1].title,
+    text: WHY_CHOOSE_US[1].text,
+  },
+  {
+    icon: HeartPulse,
+    title: WHY_CHOOSE_US[2].title,
+    text: WHY_CHOOSE_US[2].text,
   },
   {
     icon: ShieldCheck,
-    title: "FDA Protocols",
-    text: "We exclusively utilize FDA-cleared technology and pharmaceutical-grade ingredients in every clinical pathway.",
+    title: WHY_CHOOSE_US[3].title,
+    text: WHY_CHOOSE_US[3].text,
   },
   {
-    icon: Zap,
-    title: "High Precision",
-    text: "Every aesthetic intervention is viewed through a lens of anatomical accuracy and molecular balance.",
-  },
-  {
-    icon: Globe,
-    title: "Global Standards",
-    text: "Bridging the gap between European medical rigor and Addis Ababa's renowned aesthetic expertise.",
+    icon: Layers,
+    title: WHY_CHOOSE_US[4].title,
+    text: WHY_CHOOSE_US[4].text,
   },
 ];
 
@@ -69,7 +81,7 @@ const About = () => {
             </h1>
             <p className="text-white/55 text-xl font-light leading-relaxed max-w-2xl animate-fade-up"
               style={{ animationDelay: "160ms" }}>
-              Addis Ababa's premier private clinic for evidence-based dermatology and aesthetic medicine — built on the principle that every patient deserves surgical-grade precision.
+              {CLINIC_OVERVIEW}
             </p>
           </div>
         </div>
@@ -91,13 +103,13 @@ const About = () => {
               </h2>
               <div className="space-y-6 text-muted-foreground font-light leading-relaxed">
                 <p>
-                  Bosphorus Dermatology was founded with one conviction: that world-class dermatological care should be accessible in Addis Ababa. Not a compromise — the real thing.
+                  {CLINIC_OVERVIEW}
                 </p>
                 <p>
-                  Our specialists trained at internationally accredited institutions and bring that standard to every consultation, every procedure, every follow-up. We treat the skin as the complex biological system it is — not a surface to be managed, but a system to be understood.
+                  Our dermatologists take a medical-first approach — investigating underlying causes of skin distress, not only surface symptoms. From dermoscopy and AI-supported skin analysis to precise biopsies, diagnosis guides every treatment plan.
                 </p>
                 <p>
-                  The clinic was designed from the ground up to reflect that philosophy. Every room, every instrument, every protocol is chosen with clinical intent.
+                  The clinic was designed from the ground up to reflect that philosophy. Every room, every instrument, and every protocol is chosen with clinical intent — bridging advanced dermatology and the artistry of aesthetic medicine.
                 </p>
               </div>
 
@@ -132,6 +144,67 @@ const About = () => {
               </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* ── Vision & Mission ── */}
+      <section className="py-32 bg-muted/30 border-b border-border">
+        <div className="container mx-auto px-6">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16">
+
+            <div className="lg:col-span-5 animate-fade-up">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="h-px w-8 bg-accent" />
+                <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Our Vision</span>
+              </div>
+              <p className="font-heading text-3xl md:text-4xl font-light tracking-tight text-foreground leading-snug">
+                {CLINIC_VISION}
+              </p>
+            </div>
+
+            <div className="lg:col-span-6 lg:col-start-7 animate-fade-up" style={{ animationDelay: "100ms" }}>
+              <div className="flex items-center gap-3 mb-8">
+                <div className="h-px w-8 bg-accent" />
+                <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Our Mission</span>
+              </div>
+              <ul className="space-y-5">
+                {CLINIC_MISSION.map((item) => (
+                  <li key={item} className="flex items-start gap-4">
+                    <div className="mt-2 w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
+                    <p className="text-lg text-foreground/80 font-light leading-relaxed">{item}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── Clinical Approach ── */}
+      <section className="py-32 bg-background border-b border-border">
+        <div className="container mx-auto px-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-16 animate-fade-up">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-px w-8 bg-accent" />
+                <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Clinical Approach</span>
+              </div>
+              <h2 className="font-heading text-4xl md:text-5xl font-light tracking-tighter text-foreground leading-[0.95]">
+                Rooted in medical science,<br />
+                <span className="italic font-light text-muted-foreground">not surface fixes.</span>
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border animate-fade-up" style={{ animationDelay: "80ms" }}>
+              {CLINICAL_APPROACH.map((item) => (
+                <div key={item.title} className="bg-background p-10 hover:bg-muted/20 transition-colors">
+                  <h3 className="font-heading text-xl font-medium text-foreground mb-4 tracking-tight">{item.title}</h3>
+                  <p className="text-muted-foreground font-light leading-relaxed text-sm">{item.text}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -217,12 +290,12 @@ const About = () => {
               </div>
               <div className="lg:col-span-5 lg:col-start-8 flex items-end">
                 <p className="text-white/45 font-light leading-relaxed">
-                  Every decision at Bosphorus is guided by four non-negotiable principles that define how we practice medicine and serve our patients.
+                  Every decision at Bosphorus is guided by principles that define how we practice medicine — from diagnosis through treatment and long-term care.
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-px bg-white/5">
               {pillars.map((pillar, index) => (
                 <div
                   key={index}

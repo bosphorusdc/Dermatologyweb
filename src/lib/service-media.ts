@@ -9,6 +9,13 @@ export function getServiceThumbnail(service: Service): string | null {
   );
 }
 
+export function hasServiceMedia(service: Service): boolean {
+  return !!(
+    getServiceThumbnail(service) ||
+    service.images?.videos?.length
+  );
+}
+
 export function hasServiceImages(service: Service): boolean {
-  return !!getServiceThumbnail(service);
+  return hasServiceMedia(service);
 }

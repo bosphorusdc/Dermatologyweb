@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { MapPin, Clock } from "lucide-react";
+import { MapPin, Clock, Phone } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { services } from "@/data/services";
+import { CLINIC_ADDRESS, CLINIC_HOURS_DISPLAY, CLINIC_PHONE, CLINIC_PHONE_HREF, CLINIC_OVERVIEW } from "@/data/clinic";
 
 export const Footer = () => {
   return (
@@ -21,7 +22,7 @@ export const Footer = () => {
               />
             </Link>
             <p className="text-muted-foreground text-sm font-light leading-relaxed max-w-xs">
-              Evidence-based dermatology and aesthetic medicine. Board-certified specialists. Surgical-grade precision in every treatment.
+              {CLINIC_OVERVIEW}
             </p>
           </div>
 
@@ -68,11 +69,17 @@ export const Footer = () => {
             <div className="flex flex-col gap-4">
               <div className="flex items-start gap-3">
                 <MapPin className="h-3.5 w-3.5 mt-0.5 text-accent shrink-0" />
-                <span className="text-sm text-muted-foreground font-light">Hidna Building, Bole, Addis Ababa</span>
+                <span className="text-sm text-muted-foreground font-light">{CLINIC_ADDRESS.short}</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <Phone className="h-3.5 w-3.5 mt-0.5 text-accent shrink-0" />
+                <a href={CLINIC_PHONE_HREF} className="text-sm text-muted-foreground font-light hover:text-foreground transition-colors">
+                  {CLINIC_PHONE}
+                </a>
               </div>
               <div className="flex items-start gap-3">
                 <Clock className="h-3.5 w-3.5 mt-0.5 text-accent shrink-0" />
-                <span className="text-sm text-muted-foreground font-light">Mon–Sat, 02:30–11:30</span>
+                <span className="text-sm text-muted-foreground font-light">{CLINIC_HOURS_DISPLAY}</span>
               </div>
             </div>
           </div>
@@ -80,14 +87,10 @@ export const Footer = () => {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-border py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="border-t border-border py-6 flex flex-col sm:flex-row items-center justify-center gap-4">
           <p className="text-[10px] text-muted-foreground/50 tracking-widest uppercase">
             © {new Date().getFullYear()} Bosphorus Dermatology Center
           </p>
-          <div className="flex items-center gap-6">
-            <span className="text-[10px] text-muted-foreground/40 tracking-widest uppercase cursor-default">Privacy</span>
-            <span className="text-[10px] text-muted-foreground/40 tracking-widest uppercase cursor-default">Terms</span>
-          </div>
         </div>
 
       </div>

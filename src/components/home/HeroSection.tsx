@@ -186,7 +186,7 @@ export function HeroSection() {
               className="text-lg text-muted-foreground font-light leading-relaxed max-w-md mb-12 animate-fade-up"
               style={{ animationDelay: "160ms" }}
             >
-              Board-certified specialists. Evidence-based protocols. Transformative results — without compromise.
+              Board-certified specialists. Dermoscopy & advanced diagnostics. Transformative results — without compromise.
             </p>
 
             <div

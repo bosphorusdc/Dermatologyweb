@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { LazyVideo } from "@/components/ui/lazy-video";
 import { ServiceMediaPlaceholder } from "@/components/ui/service-media-placeholder";
 import { getServiceThumbnail } from "@/lib/service-media";
+import { CLINIC_OVERVIEW } from "@/data/clinic";
 
 const prpVideo = new URL("../assets/prp/IMG_4516.MOV", import.meta.url).href;
 
@@ -42,7 +43,7 @@ const pillars = [
   {
     icon: Microscope,
     title: "Diagnostic-First",
-    text: "We analyse skin at a molecular level before recommending any procedure. Precision is our baseline.",
+    text: "Dermoscopy and AI-supported skin analysis guide every consultation — we investigate causes before recommending treatment.",
   },
   {
     icon: ShieldCheck,
@@ -92,7 +93,7 @@ const Home = () => {
               </h2>
 
               <p className="text-lg text-muted-foreground font-light leading-relaxed mb-6 max-w-lg">
-                Every treatment at Bosphorus is performed with surgical discipline. Our specialists bring years of advanced clinical training to each session — no shortcuts, no compromises.
+                {CLINIC_OVERVIEW}
               </p>
 
               <p className="text-lg text-muted-foreground font-light leading-relaxed mb-12 max-w-lg">

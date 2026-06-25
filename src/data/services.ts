@@ -12,7 +12,7 @@ export interface Service {
   };
 }
 
-export const services: Service[] = [
+const serviceList: Service[] = [
   {
     slug: "acne",
     title: "Acne Treatment",
@@ -713,4 +713,17 @@ export const services: Service[] = [
   },
 ];
 
-export const featuredServices = services.slice(0, 3);
+function hasMedia(service: Service): boolean {
+  return !!(
+    service.images?.after ||
+    service.images?.before ||
+    service.images?.gallery?.length ||
+    service.images?.videos?.length
+  );
+}
+
+export const services = [...serviceList].sort(
+  (a, b) => Number(!hasMedia(a)) - Number(!hasMedia(b))
+);
+
+export const featuredServices = services.filter(hasMedia).slice(0, 3);

@@ -1,6 +1,12 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { MapPin, Clock, ArrowUpRight } from "lucide-react";
+import { MapPin, Clock, Phone, ArrowUpRight } from "lucide-react";
+import {
+  CLINIC_ADDRESS,
+  CLINIC_NAME,
+  CLINIC_PHONE,
+  CLINIC_PHONE_HREF,
+} from "@/data/clinic";
 
 const img = new URL("../assets/Images/photo_3_2026-03-25_21-38-08.jpg", import.meta.url).href;
 
@@ -13,9 +19,16 @@ const contactDetails = [
   {
     icon: MapPin,
     label: "Address",
-    value: "Hidna Building, Bole",
-    sub: "Addis Ababa, Ethiopia",
-    href: "https://maps.google.com/maps?q=Hidna+Building,+Bole,+Addis+Ababa,+Ethiopia",
+    value: CLINIC_ADDRESS.line1,
+    sub: `${CLINIC_ADDRESS.line2}, ${CLINIC_ADDRESS.city}`,
+    href: CLINIC_ADDRESS.mapsUrl,
+  },
+  {
+    icon: Phone,
+    label: "Phone",
+    value: CLINIC_PHONE,
+    sub: "Call to book or inquire",
+    href: CLINIC_PHONE_HREF,
   },
 ];
 
@@ -38,7 +51,7 @@ const Contact = () => {
               <span className="font-medium">journey.</span>
             </h1>
             <p className="mt-8 text-muted-foreground font-light text-lg leading-relaxed max-w-xl">
-              We operate strictly by appointment to ensure privacy and clinical attention. Visit us during clinical hours.
+              We operate strictly by appointment to ensure privacy and clinical attention. Visit us during clinical hours or call to schedule.
             </p>
           </div>
         </div>
@@ -49,7 +62,6 @@ const Contact = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-0 lg:items-stretch border border-border">
 
-            {/* Clinic image */}
             <div className="lg:col-span-7 relative min-h-[320px] lg:min-h-[560px] overflow-hidden animate-fade-up">
               <img
                 src={img}
@@ -60,12 +72,11 @@ const Contact = () => {
               <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
                 <p className="text-[9px] font-black tracking-[0.4em] text-white/50 uppercase mb-2">Our Clinic</p>
                 <p className="font-heading text-2xl md:text-3xl font-light text-white tracking-tight">
-                  Bosphorus Dermatology &amp; Aesthetic Center
+                  {CLINIC_NAME}
                 </p>
               </div>
             </div>
 
-            {/* Contact panel */}
             <div className="lg:col-span-5 flex flex-col animate-fade-up" style={{ animationDelay: "120ms" }}>
               <div className="p-8 md:p-10 border-b border-border bg-muted/20">
                 <div className="flex items-center gap-3 mb-6">
@@ -135,12 +146,14 @@ const Contact = () => {
                 <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Find Us</span>
               </div>
               <h2 className="font-heading text-3xl md:text-4xl font-light tracking-tighter text-foreground">
-                Hidna Building, Bole
+                {CLINIC_ADDRESS.line1}
               </h2>
-              <p className="text-muted-foreground font-light mt-2">Addis Ababa, Ethiopia</p>
+              <p className="text-muted-foreground font-light mt-2">
+                {CLINIC_ADDRESS.line2}, {CLINIC_ADDRESS.city}
+              </p>
             </div>
             <a
-              href="https://maps.google.com/maps?q=Hidna+Building,+Bole,+Addis+Ababa,+Ethiopia"
+              href={CLINIC_ADDRESS.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-[10px] font-black tracking-[0.3em] uppercase text-foreground hover:text-accent transition-colors group shrink-0"
@@ -154,7 +167,7 @@ const Contact = () => {
         <div className="w-full h-[420px] md:h-[480px] grayscale-[0.5] hover:grayscale-0 transition-all duration-1000">
           <iframe
             title="Bosphorus Clinic Location"
-            src="https://maps.google.com/maps?q=Hidna+Building,+Bole,+Addis+Ababa,+Ethiopia&output=embed&z=16"
+            src={`${CLINIC_ADDRESS.mapsUrl}&output=embed&z=16`}
             width="100%"
             height="100%"
             style={{ border: 0 }}
