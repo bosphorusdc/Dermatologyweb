@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, MapPin, Clock } from "lucide-react";
+import { MapPin, Clock } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { services } from "@/data/services";
 
@@ -68,15 +68,11 @@ export const Footer = () => {
             <div className="flex flex-col gap-4">
               <div className="flex items-start gap-3">
                 <MapPin className="h-3.5 w-3.5 mt-0.5 text-accent shrink-0" />
-                <span className="text-sm text-muted-foreground font-light">Bole, Addis Ababa, ET</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <Mail className="h-3.5 w-3.5 mt-0.5 text-accent shrink-0" />
-                <span className="text-sm text-muted-foreground font-light">bosphorus@gmail.com</span>
+                <span className="text-sm text-muted-foreground font-light">Hidna Building, Bole, Addis Ababa</span>
               </div>
               <div className="flex items-start gap-3">
                 <Clock className="h-3.5 w-3.5 mt-0.5 text-accent shrink-0" />
-                <span className="text-sm text-muted-foreground font-light">Mon–Fri, 09:00–18:00</span>
+                <span className="text-sm text-muted-foreground font-light">Mon–Sat, 02:30–11:30</span>
               </div>
             </div>
           </div>

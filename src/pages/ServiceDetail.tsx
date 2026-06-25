@@ -2,8 +2,11 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
+import { ServiceMediaPlaceholder } from "@/components/ui/service-media-placeholder";
+import { LazyVideo } from "@/components/ui/lazy-video";
 import { ArrowRight, ChevronLeft } from "lucide-react";
 import { services } from "@/data/services";
+import { getServiceThumbnail } from "@/lib/service-media";
 
 const ServiceDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -15,10 +18,7 @@ const ServiceDetail = () => {
   const hasBeforeAfter = !!(service.images?.before && service.images?.after);
   const hasVideos      = !!(service.images?.videos?.length);
   const hasGallery     = !!(service.images?.gallery?.length);
-
-  // Hero media: prefer after photo, then first video, then gallery
-  const heroMedia = service.images?.after ?? service.images?.before ?? service.images?.gallery?.[0];
-  const heroVideo  = !heroMedia && hasVideos ? service.images!.videos![0] : null;
+  const heroMedia      = getServiceThumbnail(service);
 
   // Related services (prev/next)
   const prev = services[serviceIndex - 1];
@@ -32,11 +32,18 @@ const ServiceDetail = () => {
       <section className="relative h-[70vh] min-h-[520px] flex items-end overflow-hidden">
         {/* Media */}
         {heroMedia ? (
-          <img src={heroMedia} alt={service.title} className="absolute inset-0 w-full h-full object-cover" />
-        ) : heroVideo ? (
-          <video src={heroVideo} autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" />
+          <img
+            src={heroMedia}
+            alt={service.title}
+            className="absolute inset-0 w-full h-full object-cover"
+            fetchPriority="high"
+          />
         ) : (
-          <div className="absolute inset-0 bg-muted" />
+          <ServiceMediaPlaceholder
+            title={service.title}
+            variant="hero"
+            className="absolute inset-0 w-full h-full"
+          />
         )}
 
         {/* Overlay */}
@@ -161,11 +168,11 @@ const ServiceDetail = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-up" style={{ animationDelay: "80ms" }}>
                 <div className="relative overflow-hidden h-[500px]">
-                  <img src={service.images!.before} alt="Before" className="w-full h-full object-cover" />
+                  <img src={service.images!.before} alt="Before" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                   <div className="absolute bottom-5 left-5 bg-foreground/80 backdrop-blur-sm px-4 py-2 text-[9px] font-black tracking-[0.3em] text-background uppercase">Before</div>
                 </div>
                 <div className="relative overflow-hidden h-[500px]">
-                  <img src={service.images!.after} alt="After" className="w-full h-full object-cover" />
+                  <img src={service.images!.after} alt="After" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                   <div className="absolute bottom-5 right-5 bg-accent px-4 py-2 text-[9px] font-black tracking-[0.3em] text-accent-foreground uppercase">After</div>
                 </div>
               </div>
@@ -189,7 +196,7 @@ const ServiceDetail = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 animate-fade-up" style={{ animationDelay: "80ms" }}>
                 {service.images!.gallery!.map((src, i) => (
                   <div key={i} className="aspect-square overflow-hidden">
-                    <img src={src} alt={`${service.title} ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                    <img src={src} alt={`${service.title} ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" loading="lazy" decoding="async" />
                   </div>
                 ))}
               </div>
@@ -210,14 +217,7 @@ const ServiceDetail = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-up" style={{ animationDelay: "80ms" }}>
                 {service.images!.videos!.map((src, i) => (
                   <div key={i} className="aspect-[9/16] overflow-hidden bg-black">
-                    <video
-                      src={src}
-                      className="w-full h-full object-cover"
-                      controls
-                      muted
-                      playsInline
-                      preload="metadata"
-                    />
+                    <LazyVideo src={src} clickToPlay className="w-full h-full object-cover" />
                   </div>
                 ))}
               </div>

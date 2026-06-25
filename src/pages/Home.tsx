@@ -15,6 +15,9 @@ import {
   FlaskConical,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LazyVideo } from "@/components/ui/lazy-video";
+import { ServiceMediaPlaceholder } from "@/components/ui/service-media-placeholder";
+import { getServiceThumbnail } from "@/lib/service-media";
 
 const prpVideo = new URL("../assets/prp/IMG_4516.MOV", import.meta.url).href;
 
@@ -111,12 +114,9 @@ const Home = () => {
             {/* PRP Video */}
             <div className="lg:col-span-5 relative animate-fade-up" style={{ animationDelay: "200ms" }}>
               <div className="aspect-[3/4] overflow-hidden bg-muted">
-                <video
+                <LazyVideo
                   src={prpVideo}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
+                  autoplayWhenVisible
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -164,34 +164,27 @@ const Home = () => {
 
           <div className="flex gap-5 animate-marquee" style={{ width: "max-content" }}>
             {[...services, ...services].map((service, i) => {
-              const img = service.images?.after
-                ?? service.images?.before
-                ?? service.images?.gallery?.[0];
+              const img = getServiceThumbnail(service);
               return (
                 <Link
                   key={`${service.slug}-${i}`}
                   to={`/services/${service.slug}`}
                   className="group relative shrink-0 w-64 h-80 overflow-hidden border border-border hover:border-accent/50 transition-all duration-500"
                 >
-                  {/* Image or video thumbnail */}
                   {img ? (
                     <img
                       src={img}
                       alt={service.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
-                    />
-                  ) : service.images?.videos?.[0] ? (
-                    <video
-                      src={service.images.videos[0]}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
-                      muted
-                      playsInline
-                      preload="metadata"
-                      onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play()}
-                      onMouseLeave={(e) => { const v = e.currentTarget as HTMLVideoElement; v.pause(); v.currentTime = 0; }}
+                      loading="lazy"
+                      decoding="async"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50" />
+                    <ServiceMediaPlaceholder
+                      title={service.title}
+                      variant="thumb"
+                      className="w-full h-full"
+                    />
                   )}
 
                   {/* Overlay */}
