@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import type { VideoHTMLAttributes } from "react";
 import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface LazyVideoProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
+interface LazyVideoProps extends VideoHTMLAttributes<HTMLVideoElement> {
   src: string;
   autoplayWhenVisible?: boolean;
   clickToPlay?: boolean;

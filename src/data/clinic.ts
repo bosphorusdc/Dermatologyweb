@@ -1,4 +1,4 @@
-export const CLINIC_NAME = "Bosphorus Dermatology & Aesthetic Center";
+export const CLINIC_NAME = "Bosphorus Dermatology & Aesthetics Center";
 
 export const CLINIC_ADDRESS = {
   line1: "Hidmona Tower, 2nd Floor",
@@ -49,3 +49,6 @@ export const CLINICAL_APPROACH = [
     text: "Specialized protocols for psoriasis, eczema, vitiligo, rosacea, and infectious skin conditions with long-term management.",
   },
 ];
+
+export { TEAM_MEMBERS } from "./team";
+export type { TeamMember } from "./team";

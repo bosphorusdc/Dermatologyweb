@@ -1,21 +1,26 @@
 import type { Service } from "@/data/services";
+import logoImg from "@/assets/logo.png";
+
+export const CLINIC_LOGO = logoImg;
 
 export function getServiceThumbnail(service: Service): string | null {
-  return (
-    service.images?.after ??
-    service.images?.before ??
-    service.images?.gallery?.[0] ??
-    null
-  );
+  if (service.images?.after) return service.images.after;
+  if (service.images?.before) return service.images.before;
+  if (service.images?.gallery?.[0]) return service.images.gallery[0];
+  return null;
+}
+
+export function hasServiceVideo(service: Service): boolean {
+  return Boolean(service.images?.videos && service.images.videos.length > 0);
 }
 
 export function hasServiceMedia(service: Service): boolean {
-  return !!(
+  return Boolean(
     getServiceThumbnail(service) ||
-    service.images?.videos?.length
+    hasServiceVideo(service)
   );
 }
 
 export function hasServiceImages(service: Service): boolean {
-  return hasServiceMedia(service);
+  return Boolean(getServiceThumbnail(service));
 }

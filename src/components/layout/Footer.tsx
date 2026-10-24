@@ -34,6 +34,7 @@ export const Footer = () => {
                 { name: "Home", href: "/" },
                 { name: "About", href: "/about" },
                 { name: "Services", href: "/services" },
+                { name: "Gallery", href: "/gallery" },
                 { name: "Contact", href: "/contact" },
               ].map((item) => (
                 <Link
@@ -89,7 +90,7 @@ export const Footer = () => {
         {/* Bottom bar */}
         <div className="border-t border-border py-6 flex flex-col sm:flex-row items-center justify-center gap-4">
           <p className="text-[10px] text-muted-foreground/50 tracking-widest uppercase">
-            © {new Date().getFullYear()} Bosphorus Dermatology Center
+            © {new Date().getFullYear()} Bosphorus Dermatology & Aesthetics Center
           </p>
         </div>
 

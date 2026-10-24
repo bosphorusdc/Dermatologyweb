@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
 import { HeroSection } from "@/components/home/HeroSection";
 
-import { services, featuredServices } from "@/data/services";
+import { services } from "@/data/services";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import {
   ArrowRight,
-  Plus,
   Microscope,
   ShieldCheck,
   Stethoscope,
@@ -16,8 +15,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LazyVideo } from "@/components/ui/lazy-video";
-import { ServiceMediaPlaceholder } from "@/components/ui/service-media-placeholder";
-import { getServiceThumbnail } from "@/lib/service-media";
+import { TreatmentsCarousel } from "@/components/home/TreatmentsCarousel";
+import { TeamSection } from "@/components/home/TeamSection";
+import { AmbassadorSection } from "@/components/home/AmbassadorSection";
 import { CLINIC_OVERVIEW } from "@/data/clinic";
 
 const prpVideo = new URL("../assets/prp/IMG_4516.MOV", import.meta.url).href;
@@ -70,7 +70,8 @@ const Home = () => {
       <Header />
       <HeroSection />
 
-
+      {/* ── 01.5: Our Brand Ambassador ─────────────────────────────────── */}
+      <AmbassadorSection />
 
       {/* ── 02: Editorial DNA ───────────────────────────────────────────── */}
       <section className="py-40 relative">
@@ -133,82 +134,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ── 03: Services Marquee ────────────────────────────────────────── */}
-      <section className="py-24 bg-background overflow-hidden border-b border-border">
-        <div className="container mx-auto px-6 mb-12 animate-fade-up">
-          <div className="flex items-end justify-between gap-8">
-            <div>
-              <div className="flex items-center gap-3 mb-5">
-                <div className="h-px w-8 bg-accent" />
-                <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Our Treatments</span>
-              </div>
-              <h2 className="font-heading text-4xl md:text-5xl font-light tracking-tighter text-foreground leading-[0.95]">
-                Every procedure,<br />
-                <span className="italic font-light text-muted-foreground">one standard.</span>
-              </h2>
-            </div>
-            <Link to="/services" className="hidden md:block shrink-0 pb-1">
-              <Button variant="ghost" className="px-0 hover:bg-transparent text-[10px] font-black tracking-[0.3em] uppercase text-foreground group">
-                All Services
-                <ArrowRight className="ml-2 h-3 w-3 text-accent group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Marquee track — duplicated for seamless loop */}
-        <div className="relative">
-          {/* Left fade */}
-          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-          {/* Right fade */}
-          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-
-          <div className="flex gap-5 animate-marquee" style={{ width: "max-content" }}>
-            {[...services, ...services].map((service, i) => {
-              const img = getServiceThumbnail(service);
-              return (
-                <Link
-                  key={`${service.slug}-${i}`}
-                  to={`/services/${service.slug}`}
-                  className="group relative shrink-0 w-64 h-80 overflow-hidden border border-border hover:border-accent/50 transition-all duration-500"
-                >
-                  {img ? (
-                    <img
-                      src={img}
-                      alt={service.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  ) : (
-                    <ServiceMediaPlaceholder
-                      title={service.title}
-                      variant="thumb"
-                      className="w-full h-full"
-                    />
-                  )}
-
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/10 to-transparent" />
-
-                  {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <p className="text-[8px] font-black tracking-[0.3em] text-accent uppercase mb-1.5">
-                      Treatment
-                    </p>
-                    <h3 className="font-heading text-base font-medium text-white leading-tight tracking-tight">
-                      {service.title}
-                    </h3>
-                  </div>
-
-                  {/* Arrow on hover */}
-                  <div className="absolute top-4 right-4 w-8 h-8 bg-background/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <ArrowRight className="h-3.5 w-3.5 text-accent" />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+      {/* ── 03: Services Carousel ────────────────────────────────────────── */}
+      <section className="py-28 bg-background border-b border-border">
+        <div className="container mx-auto px-6">
+          <TreatmentsCarousel services={services} />
         </div>
       </section>
 
@@ -303,7 +232,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ── 05: Why Bosphorus ───────────────────────────────────────────── */}
+      {/* ── 05: Medical Specialists ─────────────────────────────────────── */}
+      <TeamSection />
+
+      {/* ── 06: Why Bosphorus ───────────────────────────────────────────── */}
       <section className="py-40 bg-background border-y border-border">
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
@@ -353,66 +285,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* ── 06: Selective Procedures ──────────────────────────────────────── */}
-      <section className="py-40 bg-background">
-        <div className="container mx-auto px-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-20 animate-fade-up">
-              <div>
-                 <div className="flex items-center gap-3 mb-6">
-                  <div className="h-px w-8 bg-accent" />
-                  <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">
-                    Our Expertise
-                  </span>
-                </div>
-                <h2 className="font-heading text-5xl md:text-7xl font-light tracking-tighter text-foreground leading-[0.9]">
-                  Selective <br /><span className="italic font-light text-muted-foreground">Procedures.</span>
-                </h2>
-              </div>
-
-              <Link to="/services" className="pb-2">
-                <Button
-                  variant="ghost"
-                  className="text-foreground px-0 hover:bg-transparent text-[10px] font-black tracking-[0.3em] uppercase group"
-                >
-                  Discover Full Repertoire
-                  <ArrowRight className="ml-3 h-4 w-4 text-accent group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {featuredServices.map((service, i) => (
-                <Link
-                  key={service.slug}
-                  to={`/services/${service.slug}`}
-                  className="group block border border-border p-10 hover:border-accent/30 hover:bg-muted/30 transition-all duration-500 animate-fade-up h-full flex flex-col"
-                  style={{ animationDelay: `${i * 100}ms` }}
-                >
-                  <span className="text-[9px] font-black tracking-[0.3em] text-muted-foreground/50 group-hover:text-accent transition-colors block mb-12">
-                    0{i + 1}
-                  </span>
-                  <h3 className="font-heading text-3xl font-light text-foreground mb-6 tracking-tight group-hover:translate-x-2 transition-transform">
-                    {service.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm font-light leading-relaxed mb-12 flex-1">
-                    {service.description}
-                  </p>
-                  <div className="flex items-center gap-4 mt-auto">
-                    <span className="text-[9px] font-black tracking-[0.2em] text-foreground uppercase">View Protocol</span>
-                    <Plus className="h-3 w-3 text-accent group-hover:rotate-90 transition-transform" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-
-
 
       {/* ── 06: Final CTA ─────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-[hsl(210,17%,11%)] py-40">

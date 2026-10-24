@@ -1,0 +1,5 @@
+allowBuilds:
+  '@swc/core': true
+  esbuild: true
+minimumReleaseAgeExclude:
+  - responsive-dx@0.1.8
