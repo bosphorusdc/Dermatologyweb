@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import {
-  GALLERY_ITEMS,
   type GalleryItem,
   type GalleryCategory,
 } from "@/data/gallery";
+import { useLiveGallery } from "@/hooks/useCmsData";
 import { Button } from "@/components/ui/button";
 import {
   Play,
@@ -34,15 +34,16 @@ const CATEGORY_TABS: { key: GalleryCategory; label: string; icon: LucideIcon }[]
 ];
 
 export default function Gallery() {
+  const { items: allGalleryItems } = useLiveGallery();
   const [activeCategory, setActiveCategory] = useState<GalleryCategory>("all");
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 
   // Filtered items
   const filteredItems = useMemo(() => {
-    if (activeCategory === "all") return GALLERY_ITEMS;
-    return GALLERY_ITEMS.filter((item) => item.category === activeCategory);
-  }, [activeCategory]);
+    if (activeCategory === "all") return allGalleryItems;
+    return allGalleryItems.filter((item) => item.category === activeCategory);
+  }, [activeCategory, allGalleryItems]);
 
   const openLightbox = (item: GalleryItem) => {
     const idx = filteredItems.findIndex((i) => i.id === item.id);
@@ -101,8 +102,8 @@ export default function Gallery() {
               const isActive = activeCategory === tab.key;
               const count =
                 tab.key === "all"
-                  ? GALLERY_ITEMS.length
-                  : GALLERY_ITEMS.filter((item) => item.category === tab.key).length;
+                  ? allGalleryItems.length
+                  : allGalleryItems.filter((item) => item.category === tab.key).length;
 
               return (
                 <button
@@ -317,9 +318,11 @@ export default function Gallery() {
                 <h3 className="font-heading text-lg md:text-xl font-medium text-white tracking-tight">
                   {selectedItem.title}
                 </h3>
-                <p className="text-xs text-white/70 font-light mt-1 max-w-2xl leading-relaxed">
-                  {selectedItem.description}
-                </p>
+                {selectedItem.description && (
+                  <p className="text-xs text-white/70 font-light mt-1 max-w-2xl leading-relaxed">
+                    {selectedItem.description}
+                  </p>
+                )}
               </div>
 
               {selectedItem.tags && selectedItem.tags.length > 0 && (

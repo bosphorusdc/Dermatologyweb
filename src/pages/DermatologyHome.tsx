@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { HeroSection } from "@/components/home/HeroSection";
 
-import { services } from "@/data/services";
+import { useBeforeAfterCases, useLiveServices } from "@/hooks/useCmsData";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import {
@@ -22,11 +22,6 @@ import { CLINIC_OVERVIEW } from "@/data/clinic";
 
 const clinicInterior = new URL("../assets/Images/photo_8_2026-03-25_21-38-08.jpg", import.meta.url).href;
 const prpVideo = new URL("../assets/prp/IMG_4516.MOV", import.meta.url).href;
-
-const melasmaBeforeImg = new URL("../assets/Melasma before & after/photo_2026-03-25_13-10-10.jpg", import.meta.url).href;
-const melasmaAfterImg  = new URL("../assets/Melasma before & after/photo_2026-03-25_13-09-53.jpg", import.meta.url).href;
-const bacteriaBeforeImg = new URL("../assets/skinbacteria infection b and f/photo_2026-03-25_13-18-56.jpg", import.meta.url).href;
-const bacteriaAfterImg  = new URL("../assets/skinbacteria infection b and f/photo_2026-03-25_13-19-08.jpg", import.meta.url).href;
 
 // ── Data ────────────────────────────────────────────────────────────────────
 
@@ -66,6 +61,9 @@ const pillars = [
 // ── Component ────────────────────────────────────────────────────────────────
 
 export const DermatologyHome = () => {
+  const { services: liveServices } = useLiveServices();
+  const { cases: beforeAfterCases } = useBeforeAfterCases();
+
   return (
     <div className="min-h-screen bg-background selection:bg-accent/20 selection:text-slate-900">
       <Header />
@@ -138,7 +136,7 @@ export const DermatologyHome = () => {
       {/* ── 03: Services Carousel ────────────────────────────────────────── */}
       <section className="py-28 bg-background border-b border-border">
         <div className="container mx-auto px-6">
-          <TreatmentsCarousel services={services} />
+          <TreatmentsCarousel services={liveServices} />
         </div>
       </section>
 
@@ -162,68 +160,48 @@ export const DermatologyHome = () => {
                 </h2>
               </div>
               <p className="text-muted-foreground font-light max-w-sm leading-relaxed text-sm md:text-base">
-                Drag the slider to compare before and after each clinical protocol. Every result is photographed under standardised conditions.
+                Clinical documentation before and after each protocol. Every result is photographed under standardised conditions.
               </p>
             </div>
           </div>
 
-          {/* Two static pairs */}
+          {/* Dynamic pairs from Supabase CMS */}
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-
-            {/* Card 1 — Melasma */}
-            <div className="animate-fade-up flex flex-col" style={{ animationDelay: "80ms" }}>
-              <div className="grid grid-cols-2 h-[480px]">
-                <div className="relative overflow-hidden">
-                  <img src={melasmaBeforeImg} alt="Melasma before" className="w-full h-full object-cover" />
-                  <div className="absolute bottom-4 left-4 bg-foreground/80 backdrop-blur-sm px-3 py-1.5 text-[9px] font-black tracking-[0.3em] text-background uppercase">Before</div>
+            {beforeAfterCases.map((item, index) => (
+              <div key={item.id} className="animate-fade-up flex flex-col" style={{ animationDelay: `${(index + 1) * 80}ms` }}>
+                <div className="grid grid-cols-2 h-[480px]">
+                  <div className="relative overflow-hidden bg-black/5">
+                    <img src={item.before_image_url} alt={`${item.title} before`} className="w-full h-full object-cover" />
+                    <div className="absolute bottom-4 left-4 bg-foreground/80 backdrop-blur-sm px-3 py-1.5 text-[9px] font-black tracking-[0.3em] text-background uppercase">Before</div>
+                  </div>
+                  <div className="relative overflow-hidden bg-black/5">
+                    <img src={item.after_image_url} alt={`${item.title} after`} className="w-full h-full object-cover" />
+                    <div className="absolute bottom-4 right-4 bg-accent px-3 py-1.5 text-[9px] font-black tracking-[0.3em] text-accent-foreground uppercase">After</div>
+                  </div>
                 </div>
-                <div className="relative overflow-hidden">
-                  <img src={melasmaAfterImg} alt="Melasma after" className="w-full h-full object-cover" />
-                  <div className="absolute bottom-4 right-4 bg-accent px-3 py-1.5 text-[9px] font-black tracking-[0.3em] text-accent-foreground uppercase">After</div>
-                </div>
-              </div>
-              <div className="border border-t-0 border-border bg-background px-8 py-6 flex items-start justify-between gap-6">
-                <div>
-                  <p className="text-[9px] font-black tracking-[0.35em] text-accent uppercase mb-2">Protocol Result</p>
-                  <h3 className="font-heading text-2xl font-light text-foreground tracking-tight mb-1">Melasma Treatment</h3>
-                  <p className="text-muted-foreground text-sm font-light">Significant pigmentation reduction after 3 targeted sessions.</p>
-                </div>
-                <Link to="/services/melasma" className="shrink-0 mt-1">
-                  <Button variant="ghost" size="sm" className="rounded-none px-0 text-[10px] font-black tracking-[0.2em] uppercase text-accent hover:text-accent/80 hover:bg-transparent group">
-                    View Protocol
-                    <ArrowRight className="ml-2 h-3 w-3 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            {/* Card 2 — Skin Bacteria */}
-            <div className="animate-fade-up flex flex-col" style={{ animationDelay: "160ms" }}>
-              <div className="grid grid-cols-2 h-[480px]">
-                <div className="relative overflow-hidden">
-                  <img src={bacteriaBeforeImg} alt="Skin bacteria before" className="w-full h-full object-cover" />
-                  <div className="absolute bottom-4 left-4 bg-foreground/80 backdrop-blur-sm px-3 py-1.5 text-[9px] font-black tracking-[0.3em] text-background uppercase">Before</div>
-                </div>
-                <div className="relative overflow-hidden">
-                  <img src={bacteriaAfterImg} alt="Skin bacteria after" className="w-full h-full object-cover" />
-                  <div className="absolute bottom-4 right-4 bg-accent px-3 py-1.5 text-[9px] font-black tracking-[0.3em] text-accent-foreground uppercase">After</div>
+                <div className="border border-t-0 border-border bg-background px-8 py-6 flex items-start justify-between gap-6">
+                  <div>
+                    <p className="text-[9px] font-black tracking-[0.35em] text-accent uppercase mb-2">
+                      {item.category || "Protocol Result"}
+                    </p>
+                    <h3 className="font-heading text-2xl font-light text-foreground tracking-tight mb-1">
+                      {item.title}
+                    </h3>
+                    <div className="flex flex-wrap items-center gap-2 text-muted-foreground text-xs font-light">
+                      {item.treatment_used && <span>{item.treatment_used}</span>}
+                      {item.treatment_used && item.sessions_count && <span>•</span>}
+                      {item.sessions_count && <span className="text-accent font-medium">{item.sessions_count}</span>}
+                    </div>
+                  </div>
+                  <Link to="/services" className="shrink-0 mt-1">
+                    <Button variant="ghost" size="sm" className="rounded-none px-0 text-[10px] font-black tracking-[0.2em] uppercase text-accent hover:text-accent/80 hover:bg-transparent group">
+                      View Protocol
+                      <ArrowRight className="ml-2 h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
                 </div>
               </div>
-              <div className="border border-t-0 border-border bg-background px-8 py-6 flex items-start justify-between gap-6">
-                <div>
-                  <p className="text-[9px] font-black tracking-[0.35em] text-accent uppercase mb-2">Protocol Result</p>
-                  <h3 className="font-heading text-2xl font-light text-foreground tracking-tight mb-1">Skin Bacteria Infection</h3>
-                  <p className="text-muted-foreground text-sm font-light">Full clinical clearance achieved through targeted antibiotic protocol.</p>
-                </div>
-                <Link to="/services/skin-bacteria-infection" className="shrink-0 mt-1">
-                  <Button variant="ghost" size="sm" className="rounded-none px-0 text-[10px] font-black tracking-[0.2em] uppercase text-accent hover:text-accent/80 hover:bg-transparent group">
-                    View Protocol
-                    <ArrowRight className="ml-2 h-3 w-3 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
+            ))}
           </div>
 
           {/* Disclaimer */}
@@ -232,6 +210,7 @@ export const DermatologyHome = () => {
           </p>
         </div>
       </section>
+
 
       {/* ── 05: Medical Specialists (Staff section hidden per request) ── */}
       {/* <TeamSection /> */}

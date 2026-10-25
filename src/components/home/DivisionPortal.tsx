@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Stethoscope, GraduationCap, ArrowRight, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CLINIC_ADDRESS, CLINIC_PHONE } from "@/data/clinic";

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { services, type Service } from "@/data/services";
+import { useLiveServices } from "@/hooks/useCmsData";
 import { CLINIC_LOGO, getServiceThumbnail, hasServiceVideo } from "@/lib/service-media";
 import { Button } from "@/components/ui/button";
 import {
@@ -148,12 +149,13 @@ function ServiceCardMedia({ service }: { service: Service }) {
 }
 
 const Services = () => {
+  const { services: liveServices } = useLiveServices();
   const [activeCategory, setActiveCategory] = useState<CategoryKey>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   // Filtered Services List
   const filteredServices = useMemo(() => {
-    return services.filter((service) => {
+    return liveServices.filter((service) => {
       const category = getCategoryForService(service.slug);
       const matchesCategory =
         activeCategory === "all" || category === activeCategory;
@@ -167,7 +169,7 @@ const Services = () => {
 
       return matchesCategory && matchesSearch;
     });
-  }, [activeCategory, searchQuery]);
+  }, [liveServices, activeCategory, searchQuery]);
 
   return (
     <div className="min-h-screen bg-background">

@@ -4,6 +4,7 @@ import { SchoolFooter } from "@/components/layout/SchoolFooter";
 import { Button } from "@/components/ui/button";
 import { GraduationCap, MapPin, Phone, Building2, CheckCircle2 } from "lucide-react";
 import { SCHOOL_ADDRESS, SCHOOL_PHONE, SCHOOL_NAME, SCHOOL_PARENT_COMPANY } from "@/data/school";
+import { StudentRegistrationForm } from "@/components/school/StudentRegistrationForm";
 
 export default function SchoolAdmissions() {
   return (
@@ -14,6 +15,10 @@ export default function SchoolAdmissions() {
       <section className="pt-32 pb-20 md:pt-36 md:pb-24 bg-background border-b border-border">
         <div className="container mx-auto px-6 max-w-4xl">
           
+          {/* Online Registration Form */}
+          <div className="mb-14">
+            <StudentRegistrationForm />
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             
             {/* Session Card */}
