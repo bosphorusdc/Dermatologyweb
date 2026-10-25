@@ -18,19 +18,9 @@ import SchoolAdmissions from "./pages/SchoolAdmissions";
 import SchoolAbout from "./pages/SchoolAbout";
 import SchoolContact from "./pages/SchoolContact";
 import NotFound from "./pages/NotFound";
+import ClinicAdminPage from "./pages/admin/ClinicAdminPage";
 
 const queryClient = new QueryClient();
-
-const AdminRedirect = () => {
-  useEffect(() => {
-    const adminUrl =
-      window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-        ? "http://localhost:3000"
-        : "https://bosphorus-international.vercel.app";
-    window.location.href = adminUrl;
-  }, []);
-  return null;
-};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -41,7 +31,10 @@ const App = () => (
         <Routes>
           {/* Main Entry Hub / Dual-Category Home */}
           <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<AdminRedirect />} />
+
+          {/* Clinic CMS Routes (Self-Contained with Separate Auth) */}
+          <Route path="/admin" element={<ClinicAdminPage />} />
+          <Route path="/dermatology/admin" element={<ClinicAdminPage />} />
 
           {/* Dermatology Center Routes */}
           <Route path="/dermatology" element={<DermatologyHome />} />
