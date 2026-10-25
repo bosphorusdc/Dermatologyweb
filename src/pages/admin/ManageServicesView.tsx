@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -8,12 +8,15 @@ import {
   Edit2,
   Search,
   Upload,
-  Check,
   X,
   Loader2,
   Image as ImageIcon,
   Film,
+  Play,
   Sparkles,
+  LayoutGrid,
+  List,
+  Camera,
 } from "lucide-react";
 
 export interface ClinicServiceRecord {
@@ -30,25 +33,260 @@ export interface ClinicServiceRecord {
 }
 
 const CATEGORY_OPTIONS = [
+  "All",
   "Medical Dermatology",
   "Aesthetic Medicine",
   "Laser & Body",
   "Hair & Scalp",
 ];
 
+// Helper to determine cover media (image or video thumbnail)
+function getServiceCover(item: ClinicServiceRecord) {
+  const isVideoUrl = (url?: string | null) =>
+    Boolean(
+      url &&
+        (url.toLowerCase().endsWith(".mov") ||
+          url.toLowerCase().endsWith(".mp4") ||
+          url.includes("/videos/"))
+    );
+
+  // 1. If service has a real image cover
+  if (item.image_url && !isVideoUrl(item.image_url)) {
+    return {
+      type: "image" as const,
+      src: item.image_url,
+      hasVideo: Boolean(item.secondary_media_type === "video" && item.secondary_media_url),
+      videoUrl: item.secondary_media_type === "video" ? item.secondary_media_url : null,
+    };
+  }
+
+  // 2. If service has a video (in secondary_media_url or image_url)
+  const videoSrc =
+    item.secondary_media_type === "video" && item.secondary_media_url
+      ? item.secondary_media_url
+      : isVideoUrl(item.image_url)
+      ? item.image_url
+      : isVideoUrl(item.secondary_media_url)
+      ? item.secondary_media_url
+      : null;
+
+  if (videoSrc) {
+    return {
+      type: "video" as const,
+      src: videoSrc,
+      hasVideo: true,
+      videoUrl: videoSrc,
+    };
+  }
+
+  // 3. If service has a secondary photo
+  if (item.secondary_media_url && !isVideoUrl(item.secondary_media_url)) {
+    return {
+      type: "image" as const,
+      src: item.secondary_media_url,
+      hasVideo: false,
+      videoUrl: null,
+    };
+  }
+
+  // 4. Fallback placeholder
+  return {
+    type: "placeholder" as const,
+    src: null,
+    hasVideo: false,
+    videoUrl: null,
+  };
+}
+
+// Interactive Gallery Card Component
+function ServiceGalleryCard({
+  item,
+  onEdit,
+  onDelete,
+  onToggleActive,
+}: {
+  item: ClinicServiceRecord;
+  onEdit: (item: ClinicServiceRecord) => void;
+  onDelete: (id: string, title: string) => void;
+  onToggleActive: (id: string, current: boolean) => void;
+}) {
+  const media = getServiceCover(item);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  return (
+    <div className="border border-border bg-card overflow-hidden shadow-sm flex flex-col justify-between group hover:border-accent/40 transition-all duration-300">
+      {/* ── 1. Media Preview Area (Aspect 16:9) ── */}
+      <div className="relative aspect-video bg-neutral-900 overflow-hidden select-none">
+        {media.type === "video" && media.src ? (
+          <div className="relative w-full h-full bg-black">
+            <video
+              ref={videoRef}
+              src={`${media.src}#t=0.001`}
+              preload="metadata"
+              playsInline
+              muted
+              loop
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+              onMouseEnter={() => {
+                videoRef.current?.play().catch(() => {});
+              }}
+              onMouseLeave={() => {
+                if (videoRef.current) {
+                  videoRef.current.pause();
+                  videoRef.current.currentTime = 0.001;
+                }
+              }}
+            />
+            {/* Center Play Overlay Icon */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80 group-hover:opacity-0 transition-opacity">
+              <div className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white">
+                <Play className="w-4 h-4 fill-white ml-0.5" />
+              </div>
+            </div>
+          </div>
+        ) : media.type === "image" && media.src ? (
+          <img
+            src={media.src}
+            alt={item.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center bg-muted/40 p-6 text-center">
+            <div className="w-10 h-10 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center text-accent mb-2">
+              <ImageIcon className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+              Clinical Protocol
+            </span>
+          </div>
+        )}
+
+        {/* Top-Left Badges: Order & Media Type */}
+        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 z-10 pointer-events-none">
+          <span className="bg-black/75 backdrop-blur-md px-2 py-0.5 text-[9px] font-mono text-white/90 border border-white/10">
+            #{item.order_index}
+          </span>
+          {media.type === "video" ? (
+            <span className="bg-accent px-2 py-0.5 text-[8px] font-black uppercase text-accent-foreground tracking-wider flex items-center gap-1 shadow-sm">
+              <Play className="w-2.5 h-2.5 fill-current" />
+              <span>Video Thumbnail</span>
+            </span>
+          ) : media.hasVideo ? (
+            <span className="bg-accent px-2 py-0.5 text-[8px] font-black uppercase text-accent-foreground tracking-wider flex items-center gap-1 shadow-sm">
+              <Film className="w-2.5 h-2.5" />
+              <span>+ Video</span>
+            </span>
+          ) : (
+            <span className="bg-black/60 backdrop-blur-md px-2 py-0.5 text-[8px] font-bold uppercase text-white tracking-wider flex items-center gap-1">
+              <Camera className="w-2.5 h-2.5" />
+              <span>Photo</span>
+            </span>
+          )}
+        </div>
+
+        {/* Top-Right: Live / Draft Toggle */}
+        <div className="absolute top-2.5 right-2.5 z-10">
+          <button
+            onClick={() => onToggleActive(item.id, item.is_active)}
+            className={`px-2.5 py-0.5 text-[8px] font-black tracking-widest uppercase transition-all shadow-sm ${
+              item.is_active
+                ? "bg-emerald-600 text-white"
+                : "bg-black/70 backdrop-blur-md text-white/70 hover:text-white border border-white/20"
+            }`}
+            title="Click to toggle Live/Draft"
+          >
+            {item.is_active ? "Live" : "Draft"}
+          </button>
+        </div>
+
+        {/* Subtle Bottom Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 pointer-events-none" />
+      </div>
+
+      {/* ── 2. Card Content Area ── */}
+      <div className="p-4 flex-1 flex flex-col justify-between">
+        <div>
+          <span className="text-[9px] font-bold text-accent uppercase tracking-widest block mb-1.5">
+            {item.category}
+          </span>
+          <h3 className="font-heading text-base font-medium text-foreground tracking-tight leading-snug mb-2 line-clamp-1">
+            {item.title}
+          </h3>
+          {item.description ? (
+            <p className="text-xs text-muted-foreground font-light line-clamp-2 leading-relaxed">
+              {item.description}
+            </p>
+          ) : (
+            <p className="text-xs text-muted-foreground/50 font-light italic">
+              Standard clinical procedure protocol
+            </p>
+          )}
+        </div>
+
+        {/* ── 3. Bottom Action Bar ── */}
+        <div className="pt-3.5 mt-3.5 border-t border-border flex items-center justify-between">
+          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+            {item.secondary_media_url && (
+              <span className="inline-flex items-center gap-1 text-accent font-medium uppercase text-[9px]">
+                {item.secondary_media_type === "video" ? (
+                  <>
+                    <Film className="w-3 h-3" />
+                    <span>Live Video</span>
+                  </>
+                ) : (
+                  <>
+                    <ImageIcon className="w-3 h-3" />
+                    <span>2nd Media</span>
+                  </>
+                )}
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-1">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => onEdit(item)}
+              className="rounded-none h-7 px-2.5 text-[10px] font-bold uppercase gap-1"
+            >
+              <Edit2 className="w-3 h-3" />
+              <span>Edit</span>
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => onDelete(item.id, item.title)}
+              className="rounded-none h-7 w-7 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+              title="Delete service"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ManageServicesView() {
   const [services, setServices] = useState<ClinicServiceRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [viewMode, setViewMode] = useState<"grid" | "table">("grid");
+
+  // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ClinicServiceRecord | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploadingCover, setIsUploadingCover] = useState(false);
   const [isUploadingSecondary, setIsUploadingSecondary] = useState(false);
 
-  // Form State: Name, Category, Description (Optional), Cover Photo, Another Photo or Video
+  // Form State
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState(CATEGORY_OPTIONS[0]);
+  const [category, setCategory] = useState("Medical Dermatology");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [secondaryMediaUrl, setSecondaryMediaUrl] = useState("");
@@ -91,7 +329,7 @@ export function ManageServicesView() {
     } else {
       setEditingItem(null);
       setTitle("");
-      setCategory(CATEGORY_OPTIONS[0]);
+      setCategory("Medical Dermatology");
       setDescription("");
       setImageUrl("");
       setSecondaryMediaUrl("");
@@ -140,7 +378,11 @@ export function ManageServicesView() {
     if (!file) return;
 
     setIsUploadingSecondary(true);
-    const isVideo = file.type.startsWith("video/") || file.name.endsWith(".MOV") || file.name.endsWith(".mov") || file.name.endsWith(".mp4");
+    const isVideo =
+      file.type.startsWith("video/") ||
+      file.name.endsWith(".MOV") ||
+      file.name.endsWith(".mov") ||
+      file.name.endsWith(".mp4");
     setSecondaryMediaType(isVideo ? "video" : "image");
 
     try {
@@ -158,7 +400,7 @@ export function ManageServicesView() {
         .getPublicUrl(fileName);
 
       setSecondaryMediaUrl(urlData.publicUrl);
-      toast.success(isVideo ? "Secondary video uploaded" : "Secondary photo uploaded");
+      toast.success(isVideo ? "Procedure video uploaded" : "Secondary photo uploaded");
     } catch (err: any) {
       console.error("Secondary upload error:", err);
       toast.error("Failed to upload file: " + (err.message || ""));
@@ -250,16 +492,20 @@ export function ManageServicesView() {
     }
   };
 
-  const filtered = services.filter(
-    (s) =>
+  // Filtered by Search & Category
+  const filtered = services.filter((s) => {
+    const matchesCategory =
+      selectedCategory === "All" || s.category === selectedCategory;
+    const matchesSearch =
       s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       s.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (s.description && s.description.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+      (s.description && s.description.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="space-y-6">
-      {/* Top Header & Actions */}
+      {/* ── 1. Top Header & Add Service Action ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border">
         <div>
           <h2 className="font-heading text-2xl font-light text-foreground">
@@ -281,25 +527,74 @@ export function ManageServicesView() {
         </div>
       </div>
 
-      {/* Filter and Search */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="relative flex-1 max-w-md">
-          <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            placeholder="Search services by name or category..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-10 pl-10 pr-4 bg-muted/30 border border-border text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent"
-          />
+      {/* ── 2. Category Filter Tabs & View Toggle Bar ── */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        {/* Category Tabs */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          {CATEGORY_OPTIONS.map((cat) => {
+            const count =
+              cat === "All"
+                ? services.length
+                : services.filter((s) => s.category === cat).length;
+
+            return (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase transition-colors ${
+                  selectedCategory === cat
+                    ? "bg-foreground text-background"
+                    : "bg-muted text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {cat} ({count})
+              </button>
+            );
+          })}
         </div>
 
-        <span className="text-xs text-muted-foreground">
-          Showing <strong className="text-foreground">{filtered.length}</strong> services
-        </span>
+        {/* Search & Layout View Toggle */}
+        <div className="flex items-center gap-3">
+          <div className="relative flex-1 sm:w-64">
+            <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search services..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full h-9 pl-9 pr-3 bg-muted/30 border border-border text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent"
+            />
+          </div>
+
+          {/* Grid / Table Toggle */}
+          <div className="hidden sm:flex items-center border border-border bg-muted/40 p-0.5">
+            <button
+              onClick={() => setViewMode("grid")}
+              className={`p-1.5 transition-colors ${
+                viewMode === "grid"
+                  ? "bg-card text-foreground shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              title="Gallery Cards View"
+            >
+              <LayoutGrid className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode("table")}
+              className={`p-1.5 transition-colors ${
+                viewMode === "table"
+                  ? "bg-card text-foreground shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              title="Table View"
+            >
+              <List className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Services List / Table */}
+      {/* ── 3. Content Display: Gallery Cards (Default) or Table ── */}
       {loading ? (
         <div className="p-16 text-center border border-border bg-card">
           <Loader2 className="w-6 h-6 animate-spin mx-auto text-accent mb-2" />
@@ -312,7 +607,9 @@ export function ManageServicesView() {
             No services found
           </h3>
           <p className="text-xs text-muted-foreground mb-4">
-            Get started by adding your first clinic procedure to the database.
+            {searchQuery
+              ? "Try adjusting your search terms or category filter."
+              : "Get started by adding your first clinic procedure."}
           </p>
           <Button
             onClick={() => handleOpenModal()}
@@ -322,127 +619,65 @@ export function ManageServicesView() {
             Create Service
           </Button>
         </div>
+      ) : viewMode === "grid" ? (
+        /* ── Gallery Cards Grid ── */
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+          {filtered.map((item) => (
+            <ServiceGalleryCard
+              key={item.id}
+              item={item}
+              onEdit={handleOpenModal}
+              onDelete={handleDelete}
+              onToggleActive={handleToggleActive}
+            />
+          ))}
+        </div>
       ) : (
-        <>
-          {/* Mobile Card List (< md) */}
-          <div className="grid grid-cols-1 gap-3 md:hidden">
-            {filtered.map((item) => (
-              <div key={item.id} className="border border-border bg-card p-4 shadow-sm space-y-3">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    {item.image_url ? (
-                      <img
-                        src={item.image_url}
-                        alt={item.title}
-                        className="w-12 h-12 object-cover border border-border shrink-0"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 bg-muted border border-border flex items-center justify-center shrink-0 text-muted-foreground">
-                        <ImageIcon className="w-5 h-5" />
-                      </div>
-                    )}
-                    <div>
-                      <span className="font-heading font-medium text-foreground text-sm block leading-tight">
-                        {item.title}
-                      </span>
-                      <span className="text-[10px] text-accent font-bold uppercase tracking-wider">
-                        {item.category}
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => handleToggleActive(item.id, item.is_active)}
-                    className={`px-2 py-0.5 text-[9px] font-black tracking-widest uppercase shrink-0 ${
-                      item.is_active
-                        ? "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
-                        : "bg-muted text-muted-foreground border border-border"
-                    }`}
-                  >
-                    {item.is_active ? "Live" : "Draft"}
-                  </button>
-                </div>
-
-                {item.description && (
-                  <p className="text-xs text-muted-foreground line-clamp-2 font-light">
-                    {item.description}
-                  </p>
-                )}
-
-                <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t border-border/50">
-                  <div className="flex items-center gap-2 text-[10px]">
-                    <span className="font-mono text-muted-foreground">#{item.order_index}</span>
-                    {item.secondary_media_url && (
-                      <span className="inline-flex items-center gap-1 text-accent font-bold uppercase">
-                        {item.secondary_media_type === "video" ? (
-                          <>
-                            <Film className="w-3 h-3" />
-                            <span>Video Attached</span>
-                          </>
-                        ) : (
-                          <>
-                            <ImageIcon className="w-3 h-3" />
-                            <span>Photo Attached</span>
-                          </>
-                        )}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleOpenModal(item)}
-                      className="rounded-none h-7 px-2 text-[10px] font-bold uppercase"
-                    >
-                      <Edit2 className="w-3 h-3 mr-1" /> Edit
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => handleDelete(item.id, item.title)}
-                      className="rounded-none h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Desktop Table (md and above) */}
-          <div className="hidden md:block border border-border bg-card overflow-x-auto shadow-sm">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-muted/40 border-b border-border text-muted-foreground uppercase text-[10px] tracking-wider">
-                <tr>
-                  <th className="py-3 px-4 w-12">#</th>
-                  <th className="py-3 px-4">Service Name</th>
-                  <th className="py-3 px-4">Category</th>
-                  <th className="py-3 px-4">Description</th>
-                  <th className="py-3 px-4">Media</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {filtered.map((item) => (
+        /* ── Table View Fallback ── */
+        <div className="border border-border bg-card overflow-x-auto shadow-sm">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-muted/40 border-b border-border text-muted-foreground uppercase text-[10px] tracking-wider">
+              <tr>
+                <th className="py-3 px-4 w-12">#</th>
+                <th className="py-3 px-4">Service</th>
+                <th className="py-3 px-4">Category</th>
+                <th className="py-3 px-4">Description</th>
+                <th className="py-3 px-4">Media</th>
+                <th className="py-3 px-4">Status</th>
+                <th className="py-3 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {filtered.map((item) => {
+                const media = getServiceCover(item);
+                return (
                   <tr key={item.id} className="hover:bg-muted/20 transition-colors">
                     <td className="py-3.5 px-4 font-mono text-muted-foreground">
                       {item.order_index}
                     </td>
                     <td className="py-3.5 px-4">
                       <div className="flex items-center gap-3">
-                        {item.image_url ? (
-                          <img
-                            src={item.image_url}
-                            alt={item.title}
-                            className="w-10 h-10 object-cover border border-border shrink-0"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 bg-muted border border-border flex items-center justify-center shrink-0 text-muted-foreground">
-                            <ImageIcon className="w-4 h-4" />
-                          </div>
-                        )}
+                        <div className="w-12 h-12 bg-black/10 border border-border overflow-hidden shrink-0 relative">
+                          {media.type === "video" && media.src ? (
+                            <video
+                              src={`${media.src}#t=0.001`}
+                              preload="metadata"
+                              muted
+                              playsInline
+                              className="w-full h-full object-cover"
+                            />
+                          ) : media.type === "image" && media.src ? (
+                            <img
+                              src={media.src}
+                              alt={item.title}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                              <ImageIcon className="w-4 h-4" />
+                            </div>
+                          )}
+                        </div>
                         <span className="font-heading font-medium text-foreground text-sm">
                           {item.title}
                         </span>
@@ -458,9 +693,13 @@ export function ManageServicesView() {
                     </td>
                     <td className="py-3.5 px-4">
                       <div className="flex items-center gap-1.5">
-                        {item.image_url && (
-                          <span className="px-1.5 py-0.5 bg-muted text-[9px] font-semibold uppercase text-muted-foreground" title="Cover Photo">
-                            Cover
+                        {media.type === "video" ? (
+                          <span className="px-1.5 py-0.5 bg-accent/10 border border-accent/30 text-[9px] font-bold uppercase text-accent flex items-center gap-1">
+                            <Play className="w-2.5 h-2.5 fill-current" /> Video Cover
+                          </span>
+                        ) : (
+                          <span className="px-1.5 py-0.5 bg-muted text-[9px] font-semibold uppercase text-muted-foreground">
+                            Photo Cover
                           </span>
                         )}
                         {item.secondary_media_url && (
@@ -513,14 +752,14 @@ export function ManageServicesView() {
                       </div>
                     </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
 
-      {/* Add / Edit Modal: Name, Description (Optional), Cover Photo, Another Photo or Video */}
+      {/* ── 4. Add / Edit Modal ── */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-card border border-border w-full max-w-lg p-6 sm:p-8 shadow-2xl relative animate-fade-up max-h-[90vh] overflow-y-auto">
@@ -537,7 +776,7 @@ export function ManageServicesView() {
             </div>
 
             <form onSubmit={handleSave} className="space-y-4">
-              {/* 1. Service Name */}
+              {/* Service Name */}
               <div className="space-y-1">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-foreground">
                   Service Name *
@@ -552,7 +791,7 @@ export function ManageServicesView() {
                 />
               </div>
 
-              {/* 2. Category & Display Order */}
+              {/* Category & Display Order */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="text-[10px] font-bold uppercase tracking-wider text-foreground">
@@ -563,7 +802,7 @@ export function ManageServicesView() {
                     onChange={(e) => setCategory(e.target.value)}
                     className="w-full h-10 px-3 bg-muted/30 border border-border text-xs focus:outline-none focus:border-accent"
                   >
-                    {CATEGORY_OPTIONS.map((cat) => (
+                    {CATEGORY_OPTIONS.filter((c) => c !== "All").map((cat) => (
                       <option key={cat} value={cat}>
                         {cat}
                       </option>
@@ -584,7 +823,7 @@ export function ManageServicesView() {
                 </div>
               </div>
 
-              {/* 3. Description (Optional) */}
+              {/* Description (Optional) */}
               <div className="space-y-1">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-foreground">
                   Description <span className="text-muted-foreground font-normal">(Optional)</span>
@@ -598,7 +837,7 @@ export function ManageServicesView() {
                 />
               </div>
 
-              {/* 4. Cover Photo */}
+              {/* Cover Photo */}
               <div className="space-y-1.5 pt-2 border-t border-border">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-foreground block">
                   Cover Photo
@@ -648,7 +887,7 @@ export function ManageServicesView() {
                 </div>
               </div>
 
-              {/* 5. Another Photo or Video (Optional) */}
+              {/* Another Photo or Video (Optional) */}
               <div className="space-y-1.5 pt-2 border-t border-border">
                 <div className="flex items-center justify-between">
                   <label className="text-[10px] font-bold uppercase tracking-wider text-foreground">
