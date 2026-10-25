@@ -18,6 +18,7 @@ import {
   List,
   Camera,
 } from "lucide-react";
+import { CLINIC_LOGO } from "@/lib/service-media";
 
 export interface ClinicServiceRecord {
   id: string;
@@ -152,13 +153,12 @@ function ServiceGalleryCard({
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-muted/40 p-6 text-center">
-            <div className="w-10 h-10 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center text-accent mb-2">
-              <ImageIcon className="w-5 h-5" />
-            </div>
-            <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
-              Clinical Protocol
-            </span>
+          <div className="w-full h-full flex flex-col items-center justify-center bg-card p-6 border-b border-border/40 select-none">
+            <img
+              src={CLINIC_LOGO}
+              alt="Bosphorus Dermatology"
+              className="max-h-12 w-auto object-contain opacity-75 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
+            />
           </div>
         )}
 
@@ -177,10 +177,14 @@ function ServiceGalleryCard({
               <Film className="w-2.5 h-2.5" />
               <span>+ Video</span>
             </span>
-          ) : (
+          ) : media.type === "image" ? (
             <span className="bg-black/60 backdrop-blur-md px-2 py-0.5 text-[8px] font-bold uppercase text-white tracking-wider flex items-center gap-1">
               <Camera className="w-2.5 h-2.5" />
               <span>Photo</span>
+            </span>
+          ) : (
+            <span className="bg-black/50 backdrop-blur-md px-2 py-0.5 text-[8px] font-medium uppercase text-white/80 tracking-wider">
+              Default Logo
             </span>
           )}
         </div>
@@ -673,8 +677,8 @@ export function ManageServicesView() {
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                              <ImageIcon className="w-4 h-4" />
+                            <div className="w-full h-full flex items-center justify-center p-1 bg-card">
+                              <img src={CLINIC_LOGO} alt={item.title} className="max-h-6 w-auto object-contain opacity-70" />
                             </div>
                           )}
                         </div>
@@ -850,8 +854,8 @@ export function ManageServicesView() {
                       className="w-16 h-16 object-cover border border-border shrink-0"
                     />
                   ) : (
-                    <div className="w-16 h-16 bg-muted border border-border flex items-center justify-center text-muted-foreground shrink-0">
-                      <ImageIcon className="w-6 h-6" />
+                    <div className="w-16 h-16 bg-card border border-border flex items-center justify-center p-2 shrink-0 select-none">
+                      <img src={CLINIC_LOGO} alt="Default Logo" className="max-h-8 w-auto object-contain opacity-70" />
                     </div>
                   )}
 
