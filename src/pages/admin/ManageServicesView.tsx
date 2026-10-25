@@ -51,8 +51,11 @@ function getServiceCover(item: ClinicServiceRecord) {
           url.includes("/videos/"))
     );
 
-  // 1. If service has a real image cover
-  if (item.image_url && !isVideoUrl(item.image_url)) {
+  const isValidImageUrl = (url?: string | null) =>
+    Boolean(url && !url.startsWith("/src/assets/") && !isVideoUrl(url));
+
+  // 1. If service has a real image cover (cloud URL)
+  if (isValidImageUrl(item.image_url)) {
     return {
       type: "image" as const,
       src: item.image_url,
@@ -81,7 +84,7 @@ function getServiceCover(item: ClinicServiceRecord) {
   }
 
   // 3. If service has a secondary photo
-  if (item.secondary_media_url && !isVideoUrl(item.secondary_media_url)) {
+  if (isValidImageUrl(item.secondary_media_url)) {
     return {
       type: "image" as const,
       src: item.secondary_media_url,
@@ -113,20 +116,48 @@ function ServiceGalleryCard({
 }) {
   const media = getServiceCover(item);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
+
+  const activeVideoUrl =
+    !videoFailed &&
+    (media.type === "video"
+      ? media.src
+      : imageFailed && media.videoUrl
+      ? media.videoUrl
+      : null);
+
+  const showImage = !imageFailed && media.type === "image" && media.src;
 
   return (
     <div className="border border-border bg-card overflow-hidden shadow-sm flex flex-col justify-between group hover:border-accent/40 transition-all duration-300">
       {/* ── 1. Media Preview Area (Aspect 16:9) ── */}
       <div className="relative aspect-video bg-neutral-900 overflow-hidden select-none">
-        {media.type === "video" && media.src ? (
+        {showImage ? (
+          <img
+            src={media.src!}
+            alt={item.title}
+            onError={() => setImageFailed(true)}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+            loading="lazy"
+          />
+        ) : activeVideoUrl ? (
           <div className="relative w-full h-full bg-black">
             <video
               ref={videoRef}
-              src={`${media.src}#t=0.001`}
-              preload="metadata"
+              src={`${activeVideoUrl}#t=0.001`}
+              preload="auto"
               playsInline
               muted
               loop
+              onLoadedMetadata={(e) => {
+                try {
+                  if (e.currentTarget.currentTime === 0) {
+                    e.currentTarget.currentTime = 0.001;
+                  }
+                } catch {}
+              }}
+              onError={() => setVideoFailed(true)}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
               onMouseEnter={() => {
                 videoRef.current?.play().catch(() => {});
@@ -134,7 +165,9 @@ function ServiceGalleryCard({
               onMouseLeave={() => {
                 if (videoRef.current) {
                   videoRef.current.pause();
-                  videoRef.current.currentTime = 0.001;
+                  try {
+                    videoRef.current.currentTime = 0.001;
+                  } catch {}
                 }
               }}
             />
@@ -145,13 +178,6 @@ function ServiceGalleryCard({
               </div>
             </div>
           </div>
-        ) : media.type === "image" && media.src ? (
-          <img
-            src={media.src}
-            alt={item.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-            loading="lazy"
-          />
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center bg-card p-6 border-b border-border/40 select-none">
             <img

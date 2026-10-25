@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Play } from "lucide-react";
 import type { Service } from "@/data/services";
@@ -20,26 +20,39 @@ function ServiceCardMedia({ service }: { service: Service }) {
   const videoSrc = service.images?.videos?.[0];
   const imageSrc = getServiceThumbnail(service);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
 
   // 1. If service has its own video, show video thumbnail with live hover preview
-  if (videoSrc) {
+  if (videoSrc && !videoFailed) {
     return (
       <div className="relative w-full h-full bg-black overflow-hidden">
         <video
           ref={videoRef}
           src={`${videoSrc}#t=0.001`}
-          preload="metadata"
+          poster={imageSrc && !imageFailed ? imageSrc : undefined}
+          preload="auto"
           playsInline
           muted
           loop
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          onLoadedMetadata={(e) => {
+            try {
+              if (e.currentTarget.currentTime === 0) {
+                e.currentTarget.currentTime = 0.001;
+              }
+            } catch {}
+          }}
+          onError={() => setVideoFailed(true)}
           onMouseEnter={() => {
             videoRef.current?.play().catch(() => {});
           }}
           onMouseLeave={() => {
             if (videoRef.current) {
               videoRef.current.pause();
-              videoRef.current.currentTime = 0.001;
+              try {
+                videoRef.current.currentTime = 0.001;
+              } catch {}
             }
           }}
         />
@@ -57,12 +70,13 @@ function ServiceCardMedia({ service }: { service: Service }) {
   }
 
   // 2. If service has its own image (before/after/gallery), show image
-  if (imageSrc) {
+  if (imageSrc && !imageFailed) {
     return (
       <div className="relative w-full h-full overflow-hidden bg-muted/50">
         <img
           src={imageSrc}
           alt={service.title}
+          onError={() => setImageFailed(true)}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           loading="lazy"
           decoding="async"
