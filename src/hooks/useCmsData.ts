@@ -49,8 +49,8 @@ export function useLiveServices() {
             },
           }));
 
-          // Put dynamic CMS services first, followed by defaults
-          setServices([...mappedServices, ...defaultServices]);
+          // Use live dynamic CMS services from database
+          setServices(mappedServices);
         }
       } catch (err) {
         console.warn("Error in useLiveServices:", err);
@@ -127,7 +127,7 @@ export function useBeforeAfterCases() {
         }
 
         if (data && data.length > 0 && isMounted) {
-          setCases([...data, ...DEFAULT_BEFORE_AFTER]);
+          setCases(data);
         }
       } catch (err) {
         console.warn("Error in useBeforeAfterCases:", err);
@@ -180,7 +180,7 @@ export function useLiveGallery() {
             tags: [item.category],
           }));
 
-          setItems([...mappedItems, ...defaultGallery]);
+          setItems(mappedItems);
         }
       } catch (err) {
         console.warn("Error in useLiveGallery:", err);

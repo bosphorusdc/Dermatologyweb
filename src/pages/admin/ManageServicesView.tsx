@@ -284,20 +284,89 @@ export function ManageServicesView() {
           </Button>
         </div>
       ) : (
-        <div className="border border-border bg-card overflow-x-auto shadow-sm">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-muted/40 border-b border-border text-muted-foreground uppercase text-[10px] tracking-wider">
-              <tr>
-                <th className="py-3 px-4">Order</th>
-                <th className="py-3 px-4">Service</th>
-                <th className="py-3 px-4">Category</th>
-                <th className="py-3 px-4">Price</th>
-                <th className="py-3 px-4">Duration</th>
-                <th className="py-3 px-4">Status</th>
-                <th className="py-3 px-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
+        <>
+          {/* Mobile Card List (< md) */}
+          <div className="grid grid-cols-1 gap-3 md:hidden">
+            {filtered.map((item) => (
+              <div key={item.id} className="border border-border bg-card p-4 shadow-sm space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    {item.image_url ? (
+                      <img
+                        src={item.image_url}
+                        alt={item.title}
+                        className="w-12 h-12 object-cover border border-border shrink-0"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 bg-muted border border-border flex items-center justify-center shrink-0 text-muted-foreground">
+                        <ImageIcon className="w-5 h-5" />
+                      </div>
+                    )}
+                    <div>
+                      <span className="font-heading font-medium text-foreground text-sm block leading-tight">
+                        {item.title}
+                      </span>
+                      <span className="text-[10px] text-accent font-bold uppercase tracking-wider">
+                        {item.category}
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleToggleActive(item.id, item.is_active)}
+                    className={`px-2 py-0.5 text-[9px] font-black tracking-widest uppercase shrink-0 ${
+                      item.is_active
+                        ? "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+                        : "bg-muted text-muted-foreground border border-border"
+                    }`}
+                  >
+                    {item.is_active ? "Live" : "Draft"}
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t border-border/50">
+                  <div className="space-x-2 font-mono text-[11px]">
+                    <span className="text-foreground font-medium">{item.price || "—"}</span>
+                    <span>·</span>
+                    <span>{item.duration || "—"}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleOpenModal(item)}
+                      className="rounded-none h-7 px-2 text-[10px] font-bold uppercase"
+                    >
+                      <Edit2 className="w-3 h-3 mr-1" /> Edit
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleDelete(item.id, item.title)}
+                      className="rounded-none h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Table (md and above) */}
+          <div className="hidden md:block border border-border bg-card overflow-x-auto shadow-sm">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-muted/40 border-b border-border text-muted-foreground uppercase text-[10px] tracking-wider">
+                <tr>
+                  <th className="py-3 px-4">Order</th>
+                  <th className="py-3 px-4">Service</th>
+                  <th className="py-3 px-4">Category</th>
+                  <th className="py-3 px-4">Price</th>
+                  <th className="py-3 px-4">Duration</th>
+                  <th className="py-3 px-4">Status</th>
+                  <th className="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
               {filtered.map((item) => (
                 <tr key={item.id} className="hover:bg-muted/20 transition-colors">
                   <td className="py-3.5 px-4 font-mono text-muted-foreground">
@@ -373,6 +442,7 @@ export function ManageServicesView() {
             </tbody>
           </table>
         </div>
+      </>
       )}
 
       {/* Add / Edit Modal */}
