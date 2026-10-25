@@ -6,6 +6,7 @@ import { LazyVideo } from "@/components/ui/lazy-video";
 import { ArrowRight, ChevronLeft } from "lucide-react";
 import { services } from "@/data/services";
 import { getServiceThumbnail } from "@/lib/service-media";
+import { BeforeAfterSlider } from "@/components/home/BeforeAfterSlider";
 
 const ServiceDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -150,15 +151,13 @@ const ServiceDetail = () => {
                 <div className="h-px w-8 bg-accent" />
                 <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Clinical Results</span>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-up" style={{ animationDelay: "80ms" }}>
-                <div className="relative overflow-hidden h-[500px]">
-                  <img src={service.images!.before} alt="Before" className="w-full h-full object-cover" loading="lazy" decoding="async" />
-                  <div className="absolute bottom-5 left-5 bg-foreground/80 backdrop-blur-sm px-4 py-2 text-[9px] font-black tracking-[0.3em] text-background uppercase">Before</div>
-                </div>
-                <div className="relative overflow-hidden h-[500px]">
-                  <img src={service.images!.after} alt="After" className="w-full h-full object-cover" loading="lazy" decoding="async" />
-                  <div className="absolute bottom-5 right-5 bg-accent px-4 py-2 text-[9px] font-black tracking-[0.3em] text-accent-foreground uppercase">After</div>
-                </div>
+              <div className="max-w-4xl mx-auto h-[440px] sm:h-[540px] border border-border bg-black/10 shadow-lg relative overflow-hidden animate-fade-up" style={{ animationDelay: "80ms" }}>
+                <BeforeAfterSlider
+                  before={service.images!.before!}
+                  after={service.images!.after!}
+                  beforeLabel="Before"
+                  afterLabel="After"
+                />
               </div>
               <p className="text-[9px] text-muted-foreground/40 tracking-widest uppercase italic mt-8">
                 * Results photographed under standardised clinical lighting. Individual biological response varies.

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { HeroSection } from "@/components/home/HeroSection";
 
 import { useBeforeAfterCases, useLiveServices } from "@/hooks/useCmsData";
+import { BeforeAfterSlider } from "@/components/home/BeforeAfterSlider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import {
@@ -168,18 +169,16 @@ export const DermatologyHome = () => {
           {/* Dynamic pairs from Supabase CMS */}
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
             {beforeAfterCases.map((item, index) => (
-              <div key={item.id} className="animate-fade-up flex flex-col" style={{ animationDelay: `${(index + 1) * 80}ms` }}>
-                <div className="grid grid-cols-2 h-[480px]">
-                  <div className="relative overflow-hidden bg-black/5">
-                    <img src={item.before_image_url} alt={`${item.title} before`} className="w-full h-full object-cover" />
-                    <div className="absolute bottom-4 left-4 bg-foreground/80 backdrop-blur-sm px-3 py-1.5 text-[9px] font-black tracking-[0.3em] text-background uppercase">Before</div>
-                  </div>
-                  <div className="relative overflow-hidden bg-black/5">
-                    <img src={item.after_image_url} alt={`${item.title} after`} className="w-full h-full object-cover" />
-                    <div className="absolute bottom-4 right-4 bg-accent px-3 py-1.5 text-[9px] font-black tracking-[0.3em] text-accent-foreground uppercase">After</div>
-                  </div>
+              <div key={item.id} className="animate-fade-up flex flex-col border border-border bg-card shadow-sm overflow-hidden" style={{ animationDelay: `${(index + 1) * 80}ms` }}>
+                <div className="h-[400px] sm:h-[460px] w-full relative overflow-hidden bg-black/10">
+                  <BeforeAfterSlider
+                    before={item.before_image_url}
+                    after={item.after_image_url}
+                    beforeLabel="Before"
+                    afterLabel="After"
+                  />
                 </div>
-                <div className="border border-t-0 border-border bg-background px-8 py-6 flex items-start justify-between gap-6">
+                <div className="border-t border-border bg-background px-6 sm:px-8 py-6 flex items-start justify-between gap-6">
                   <div>
                     <p className="text-[9px] font-black tracking-[0.35em] text-accent uppercase mb-2">
                       {item.category || "Protocol Result"}

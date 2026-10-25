@@ -7,8 +7,6 @@ import { GALLERY_ITEMS as defaultGallery, type GalleryItem, type GalleryCategory
 export interface LiveService extends Service {
   id?: string;
   categoryName?: string;
-  price?: string | null;
-  duration?: string | null;
 }
 
 export function useLiveServices() {
@@ -33,21 +31,25 @@ export function useLiveServices() {
         }
 
         if (data && data.length > 0 && isMounted) {
-          const mappedServices: LiveService[] = data.map((item) => ({
-            slug: item.id,
-            title: item.title,
-            categoryName: item.category,
-            price: item.price,
-            duration: item.duration,
-            description: item.duration ? `${item.category} · ${item.duration}` : item.category,
-            fullDescription: item.title,
-            benefits: item.price
-              ? [`Professional Clinical Procedure`, `Price: ${item.price}`]
-              : [`Professional Clinical Procedure`],
-            images: {
-              gallery: item.image_url ? [item.image_url] : [],
-            },
-          }));
+          const mappedServices: LiveService[] = data.map((item) => {
+            const hasVideo = item.secondary_media_type === "video" && item.secondary_media_url;
+            const galleryList: string[] = [];
+            if (item.image_url) galleryList.push(item.image_url);
+            if (!hasVideo && item.secondary_media_url) galleryList.push(item.secondary_media_url);
+
+            return {
+              slug: item.id,
+              title: item.title,
+              categoryName: item.category,
+              description: item.description || item.category,
+              fullDescription: item.description || item.title,
+              benefits: [`Certified Dermatological Procedure`, item.category],
+              images: {
+                gallery: galleryList,
+                videos: hasVideo ? [item.secondary_media_url] : [],
+              },
+            };
+          });
 
           // Use live dynamic CMS services from database
           setServices(mappedServices);
