@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { CLINIC_ADDRESS, CLINIC_PHONE } from "@/data/clinic";
 import { SCHOOL_ADDRESS, SCHOOL_PHONE } from "@/data/school";
 
-const clinicImg = new URL("../../assets/Images/photo_1_2026-03-25_21-38-08.jpg", import.meta.url).href;
+import clinicLogo from "@/assets/derma-logo-transparent.png";
+import schoolLogo from "@/assets/school-logo-transparent.png";
 
 interface DivisionPortalProps {
   onSelectCategory?: (category: "derma" | "school") => void;
@@ -49,11 +50,11 @@ export function DivisionPortal({ onSelectCategory }: DivisionPortalProps) {
           {/* Division 1: Dermatology Center */}
           <div className="border border-border bg-card overflow-hidden flex flex-col justify-between hover:border-accent transition-all duration-300 group shadow-sm">
             <div>
-              <div className="relative aspect-[16/9] overflow-hidden bg-muted">
+              <div className="relative aspect-[16/9] overflow-hidden bg-muted/20 border-b border-border flex items-center justify-center p-8 select-none group-hover:bg-muted/40 transition-colors">
                 <img
-                  src={clinicImg}
+                  src={clinicLogo}
                   alt="Bosphorus Dermatology Clinic"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="max-h-24 sm:max-h-28 w-auto max-w-[80%] object-contain transition-transform duration-500 group-hover:scale-105"
                 />
                 <span className="absolute top-3 left-3 bg-foreground/90 backdrop-blur-sm text-background px-2.5 py-1 text-[9px] font-black tracking-widest uppercase">
                   Dermatology Center
@@ -114,11 +115,11 @@ export function DivisionPortal({ onSelectCategory }: DivisionPortalProps) {
           {/* Division 2: Cosmetology School Center */}
           <div className="border border-border bg-card overflow-hidden flex flex-col justify-between hover:border-accent transition-all duration-300 group shadow-sm">
             <div>
-              <div className="relative aspect-[16/9] overflow-hidden bg-muted">
+              <div className="relative aspect-[16/9] overflow-hidden bg-muted/20 border-b border-border flex items-center justify-center p-8 select-none group-hover:bg-muted/40 transition-colors">
                 <img
-                  src="/school/course-002.png"
+                  src={schoolLogo}
                   alt="Bosphorus Cosmetology School Training"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="max-h-24 sm:max-h-28 w-auto max-w-[80%] object-contain transition-transform duration-500 group-hover:scale-105"
                 />
                 <span className="absolute top-3 left-3 bg-accent text-accent-foreground px-2.5 py-1 text-[9px] font-black tracking-widest uppercase">
                   Cosmetology School
