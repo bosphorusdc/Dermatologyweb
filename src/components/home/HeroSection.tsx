@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const heroBeautyImg = new URL("../../assets/hero-beauty.jpg", import.meta.url).href;
+import { HeroBeforeAfterSlider } from "./HeroBeforeAfterSlider";
 
 const TYPING_WORDS = ["Medicine", "Science"];
 const TYPE_SPEED = 90;   // ms per character typed
@@ -61,56 +60,36 @@ export function HeroSection() {
       aria-labelledby="home-hero-title"
       className="relative min-h-[90vh] lg:min-h-[94vh] flex items-center overflow-hidden bg-background pt-28 pb-16 transition-colors duration-500"
     >
-      {/* ── Seamless Right Image without container ── */}
-      <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[54%] pointer-events-none select-none z-0 overflow-hidden">
-        <div className="relative w-full h-full">
-          <img
-            src={heroBeautyImg}
-            alt="Bosphorus Dermatology"
-            className="w-full h-full object-cover object-[70%_top]"
-            style={{
-              maskImage:
-                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.1) 15%, rgba(0,0,0,0.6) 35%, black 60%, black 100%), linear-gradient(to top, transparent 0%, rgba(0,0,0,0.8) 12%, black 25%)",
-              WebkitMaskImage:
-                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.1) 15%, rgba(0,0,0,0.6) 35%, black 60%, black 100%), linear-gradient(to top, transparent 0%, rgba(0,0,0,0.8) 12%, black 25%)",
-              maskComposite: "intersect",
-              WebkitMaskComposite: "destination-in",
-            }}
-            loading="eager"
-          />
-        </div>
-      </div>
-
       {/* ── Main Container ── */}
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
 
-          {/* ── Left Content: Original Editorial Typography & Animation ── */}
-          <div className="lg:col-span-7 flex flex-col justify-center animate-fade-up max-w-2xl py-6">
-            {/* Overline with accent line */}
-            <div className="flex items-center gap-4 mb-8">
-              <div className="h-px w-8 bg-accent" />
+          {/* ── Left Content: Editorial Typography & Animation (Centered on mobile, left on desktop) ── */}
+          <div className="lg:col-span-7 flex flex-col justify-center items-center text-center lg:items-start lg:text-left animate-fade-up max-w-2xl mx-auto lg:mx-0 py-6">
+            {/* Overline with icon (Hidden on mobile, visible on desktop) */}
+            <h2 className="hidden lg:flex items-center justify-start gap-2.5 mb-8">
+              <Stethoscope className="w-4 h-4 text-accent shrink-0" />
               <span className="text-[10px] font-black tracking-[0.4em] text-accent uppercase">
                 Bosphorus Dermatology & Aesthetics Center
               </span>
-            </div>
+            </h2>
 
-            {/* Main Headline with Typing Animation (Zero layout shift) */}
+            {/* Main Headline with Typing Animation (2 rows, max 3 on mobile) */}
             <h1
               id="home-hero-title"
-              className="font-heading text-[clamp(3.2rem,7vw,6.5rem)] font-light tracking-tighter text-foreground leading-[0.92] mb-8"
+              className="font-heading text-[clamp(2.1rem,5.8vw,6.5rem)] sm:text-[clamp(2.8rem,6.5vw,6.5rem)] font-light tracking-tighter text-foreground leading-[1.02] sm:leading-[0.95] lg:leading-[0.92] mb-8 text-center lg:text-left"
             >
               Where{" "}
               <span className="inline-grid grid-cols-1 grid-rows-1 items-baseline whitespace-nowrap align-baseline">
                 {/* Ghost word that locks maximum width at all screen sizes */}
                 <span
-                  className="invisible col-start-1 row-start-1 select-none pointer-events-none font-medium pr-3"
+                  className="invisible col-start-1 row-start-1 select-none pointer-events-none font-medium pr-1.5 sm:pr-3"
                   aria-hidden="true"
                 >
                   Medicine
                 </span>
                 {/* Active typed word */}
-                <span className="col-start-1 row-start-1 flex items-baseline">
+                <span className="col-start-1 row-start-1 flex items-baseline justify-center lg:justify-start">
                   <span className="font-medium text-foreground">{displayed}</span>
                   {/* Blinking cursor */}
                   <span
@@ -128,26 +107,26 @@ export function HeroSection() {
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg text-muted-foreground font-light leading-relaxed max-w-md mb-12">
+            <p className="text-lg text-muted-foreground font-light leading-relaxed max-w-md mx-auto lg:mx-0 mb-12 text-center lg:text-left">
               Board-certified specialists. Dermoscopy & advanced diagnostics. Transformative results without compromise.
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link to="/contact">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center lg:items-stretch w-full sm:w-auto">
+              <Link to="/contact" className="w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="bg-foreground hover:bg-foreground/90 text-background rounded-none h-14 px-10 text-[11px] font-black tracking-[0.25em] transition-all hover:scale-[1.02] active:scale-[0.98] group border-0 shadow-none uppercase"
+                  className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-white rounded-none h-14 px-10 text-[11px] font-black tracking-[0.25em] transition-all hover:scale-[1.02] active:scale-[0.98] group border-0 shadow-md uppercase"
                 >
                   BOOK CONSULTATION
                   <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
               </Link>
-              <Link to="/services">
+              <Link to="/services" className="w-full sm:w-auto">
                 <Button
                   size="lg"
                   variant="outline"
-                  className="rounded-none h-14 px-10 text-[11px] font-black tracking-[0.25em] text-foreground/70 hover:text-foreground hover:bg-foreground/5 transition-all uppercase border-foreground/20 hover:border-foreground/40 shadow-none"
+                  className="w-full sm:w-auto rounded-none h-14 px-10 text-[11px] font-black tracking-[0.25em] text-foreground/80 hover:text-accent hover:bg-accent/5 transition-all uppercase border-border hover:border-accent shadow-none"
                 >
                   View Services
                 </Button>
@@ -155,20 +134,9 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* ── Mobile/Tablet Image (Seamless, No Container) ── */}
-          <div className="lg:hidden relative w-full aspect-[4/5] max-w-md mx-auto animate-fade-up">
-            <img
-              src={heroBeautyImg}
-              alt="Bosphorus Dermatology"
-              className="w-full h-full object-cover object-top select-none"
-              style={{
-                maskImage:
-                  "linear-gradient(to top, transparent 0%, rgba(0,0,0,0.8) 15%, black 30%)",
-                WebkitMaskImage:
-                  "linear-gradient(to top, transparent 0%, rgba(0,0,0,0.8) 15%, black 30%)",
-              }}
-              loading="eager"
-            />
+          {/* ── Right Content: Clinical Before & After Slidable Showcase ── */}
+          <div className="lg:col-span-5 flex flex-col justify-center animate-fade-up">
+            <HeroBeforeAfterSlider />
           </div>
 
         </div>

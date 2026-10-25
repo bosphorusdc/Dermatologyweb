@@ -3,6 +3,8 @@ import { Footer } from "@/components/layout/Footer";
 import { Link } from "react-router-dom";
 import { ArrowRight, ShieldCheck, Stethoscope, Microscope, HeartPulse, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AmbassadorSection } from "@/components/home/AmbassadorSection";
+import { TeamSection } from "@/components/home/TeamSection";
 import {
   CLINIC_OVERVIEW,
   CLINIC_VISION,
@@ -56,39 +58,8 @@ const About = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      {/* ── Hero — full bleed clinic image ── */}
-      <section className="relative h-[90vh] flex items-end overflow-hidden">
-        <img
-          src={img1}
-          alt="Bosphorus Dermatology Clinic"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(210,17%,8%)] via-[hsl(210,17%,8%)]/40 to-transparent" />
-
-        <div className="relative z-10 container mx-auto px-6 pb-20">
-          <div className="max-w-4xl">
-            <div className="flex items-center gap-4 mb-8 animate-fade-up">
-              <div className="h-px w-8 bg-accent/70" />
-              <span className="text-[10px] font-black tracking-[0.5em] text-accent uppercase">
-                About Bosphorus
-              </span>
-            </div>
-            <h1 className="font-heading text-6xl md:text-8xl font-light tracking-tighter text-white leading-[0.92] animate-fade-up mb-6"
-              style={{ animationDelay: "80ms" }}>
-              Where precision<br />
-              <span className="italic text-white/40 font-light">meets</span>{" "}
-              <span className="font-medium">care.</span>
-            </h1>
-            <p className="text-white/55 text-xl font-light leading-relaxed max-w-2xl animate-fade-up"
-              style={{ animationDelay: "160ms" }}>
-              {CLINIC_OVERVIEW}
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* ── Our Story ── */}
-      <section className="py-32 bg-background border-b border-border">
+      <section className="pt-32 pb-24 md:pt-40 md:pb-32 bg-background border-b border-border">
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
 
@@ -272,47 +243,80 @@ const About = () => {
         </div>
       </section>
 
-      {/* ── Pillars ── */}
-      <section className="py-32 bg-[hsl(210,17%,11%)] border-b border-white/5">
+      {/* ── Official Brand Ambassadors ── */}
+      <AmbassadorSection />
+
+      {/* ── Slidable Medical Specialists (Staff section hidden per request) ── */}
+      {/* <TeamSection /> */}
+
+      {/* ── Pillars: What We Stand For ── */}
+      <section className="py-28 md:py-36 bg-background border-b border-border relative overflow-hidden">
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20 animate-fade-up">
-              <div className="lg:col-span-5">
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="h-px w-8 bg-accent/60" />
-                  <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Our Principles</span>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 md:mb-20 animate-fade-up">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="h-px w-8 bg-accent" />
+                  <span className="text-[10px] font-black tracking-[0.3em] text-accent uppercase">Our Principles</span>
                 </div>
-                <h2 className="font-heading text-4xl md:text-5xl font-light tracking-tighter text-white leading-[0.95]">
-                  What we<br />
-                  <span className="italic font-light text-white/35">stand for.</span>
+                <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl font-light tracking-tight text-foreground leading-[1.02]">
+                  What we <br />
+                  <span className="italic font-light text-muted-foreground">stand for.</span>
                 </h2>
               </div>
-              <div className="lg:col-span-5 lg:col-start-8 flex items-end">
-                <p className="text-white/45 font-light leading-relaxed">
-                  Every decision at Bosphorus is guided by principles that define how we practice medicine — from diagnosis through treatment and long-term care.
-                </p>
-              </div>
+              <p className="text-muted-foreground font-light text-sm md:text-base max-w-md leading-relaxed">
+                Every decision at Bosphorus is guided by clinical integrity — ensuring every patient receives dermatological care that is medically sound and deeply respectful.
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-px bg-white/5">
-              {pillars.map((pillar, index) => (
-                <div
-                  key={index}
-                  className="group bg-[hsl(210,17%,11%)] p-10 hover:bg-white/5 transition-colors duration-300 animate-fade-up"
-                  style={{ animationDelay: `${index * 80}ms` }}
-                >
-                  <div className="mb-8 w-10 h-10 flex items-center justify-center border border-white/10 group-hover:border-accent/50 group-hover:bg-accent/5 transition-all duration-300">
-                    <pillar.icon className="h-4 w-4 text-white/40 group-hover:text-accent transition-colors duration-300" />
+            {/* 5 Principles Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {pillars.map((pillar, index) => {
+                const Icon = pillar.icon;
+                const num = String(index + 1).padStart(2, "0");
+                const isFeatured = index === 0;
+
+                return (
+                  <div
+                    key={index}
+                    className={`group border border-border p-8 flex flex-col justify-between hover:border-accent/50 hover:bg-muted/20 transition-all duration-300 shadow-sm animate-fade-up ${
+                      isFeatured ? "bg-card lg:col-span-2 sm:col-span-2" : "bg-card"
+                    }`}
+                    style={{ animationDelay: `${index * 70}ms` }}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-6">
+                        <span className="text-xs font-mono font-bold text-accent tracking-widest">
+                          {num} / 05
+                        </span>
+                        <div className="w-9 h-9 border border-border flex items-center justify-center group-hover:border-accent group-hover:bg-accent/10 transition-colors">
+                          <Icon className="h-4 w-4 text-accent" />
+                        </div>
+                      </div>
+
+                      <h3 className={`font-heading font-medium tracking-tight text-foreground mb-3 group-hover:text-accent transition-colors ${
+                        isFeatured ? "text-2xl md:text-3xl" : "text-xl"
+                      }`}>
+                        {pillar.title}
+                      </h3>
+
+                      <p className={`text-muted-foreground font-light leading-relaxed ${
+                        isFeatured ? "text-sm md:text-base max-w-xl" : "text-xs md:text-sm"
+                      }`}>
+                        {pillar.text}
+                      </p>
+                    </div>
+
+                    <div className="pt-6 mt-6 border-t border-border/40 flex items-center justify-between">
+                      <span className="text-[8px] font-black tracking-widest text-muted-foreground uppercase">
+                        Clinical Pillar
+                      </span>
+                      <div className="w-1.5 h-1.5 rounded-full bg-accent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
                   </div>
-                  <h3 className="font-heading text-lg font-medium mb-3 tracking-tight text-white">
-                    {pillar.title}
-                  </h3>
-                  <p className="text-white/45 font-light leading-relaxed text-sm">
-                    {pillar.text}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
           </div>
@@ -326,7 +330,7 @@ const About = () => {
           alt="Bosphorus Dermatology"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-[hsl(210,17%,8%)]/75" />
+        <div className="absolute inset-0 bg-accent/90 backdrop-blur-[2px]" />
 
         <div className="relative z-10 container mx-auto px-6">
           <div className="max-w-2xl animate-fade-up">
@@ -334,14 +338,14 @@ const About = () => {
               Ready to experience<br />
               <span className="font-medium">the difference?</span>
             </h2>
-            <p className="text-white/50 font-light text-lg leading-relaxed mb-12 max-w-lg">
+            <p className="text-white/80 font-light text-lg leading-relaxed mb-12 max-w-lg">
               Book a private consultation with one of our board-certified specialists. We'll assess your needs and build a protocol designed specifically for you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/contact">
                 <Button
                   size="lg"
-                  className="rounded-none h-14 px-10 text-[11px] font-black tracking-[0.25em] bg-accent hover:bg-accent/90 text-accent-foreground border-0 shadow-none transition-all hover:scale-[1.02] active:scale-[0.98] group"
+                  className="rounded-none h-14 px-10 text-[11px] font-black tracking-[0.25em] bg-white hover:bg-white/95 text-accent border-0 shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] group"
                 >
                   BOOK CONSULTATION
                   <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
@@ -351,7 +355,7 @@ const About = () => {
                 <Button
                   size="lg"
                   variant="ghost"
-                  className="rounded-none h-14 px-10 text-[11px] font-black tracking-[0.25em] text-white/60 hover:text-white hover:bg-white/8 border border-white/15 hover:border-white/30 uppercase transition-all"
+                  className="rounded-none h-14 px-10 text-[11px] font-black tracking-[0.25em] text-white hover:text-white hover:bg-white/10 border border-white/30 hover:border-white/50 uppercase transition-all"
                 >
                   View Treatments
                 </Button>

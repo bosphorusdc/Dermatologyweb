@@ -1,11 +1,12 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { MapPin, Clock, Phone, ArrowUpRight } from "lucide-react";
+import { MapPin, Clock, Phone, ArrowUpRight, Facebook } from "lucide-react";
 import {
   CLINIC_ADDRESS,
   CLINIC_NAME,
   CLINIC_PHONE,
   CLINIC_PHONE_HREF,
+  CLINIC_SOCIALS,
 } from "@/data/clinic";
 
 const img = new URL("../assets/Images/photo_3_2026-03-25_21-38-08.jpg", import.meta.url).href;
@@ -37,28 +38,8 @@ const Contact = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      {/* ── Hero ── */}
-      <section className="pt-36 pb-16 border-b border-border">
-        <div className="container mx-auto px-6">
-          <div className="max-w-7xl mx-auto animate-fade-up">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="h-px w-8 bg-accent" />
-              <span className="text-[9px] font-black tracking-[0.5em] text-accent uppercase">Contact Us</span>
-            </div>
-            <h1 className="font-heading text-5xl md:text-7xl font-light tracking-tighter text-foreground leading-[0.92] max-w-3xl">
-              Let's start{" "}
-              <span className="italic text-foreground/35 font-light">your</span>{" "}
-              <span className="font-medium">journey.</span>
-            </h1>
-            <p className="mt-8 text-muted-foreground font-light text-lg leading-relaxed max-w-xl">
-              We operate strictly by appointment to ensure privacy and clinical attention. Visit us during clinical hours or call to schedule.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* ── Clinic + Contact Details ── */}
-      <section className="py-20 md:py-28 bg-background">
+      <section className="pt-32 pb-20 md:pt-36 md:pb-28 bg-background">
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-0 lg:items-stretch border border-border">
 
@@ -124,7 +105,58 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <div className="mt-10 pt-8 border-t border-border">
+                {/* Social Media Channels */}
+                <div className="mt-8 pt-6 border-t border-border">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="h-px w-6 bg-accent" />
+                    <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Social Channels</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2.5">
+                    {/* Facebook */}
+                    <a
+                      href={CLINIC_SOCIALS[0].href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="p-3 border border-border bg-card hover:bg-accent hover:text-white hover:border-accent flex flex-col items-center justify-center gap-1.5 group transition-all duration-200 active:scale-[0.97]"
+                    >
+                      <Facebook className="size-4 text-accent group-hover:text-white transition-colors" />
+                      <span className="text-[10px] font-bold tracking-wider uppercase">Facebook</span>
+                      <span className="text-[9px] text-muted-foreground group-hover:text-white/80 font-light truncate max-w-full">{CLINIC_SOCIALS[0].handle}</span>
+                    </a>
+
+                    {/* Instagram */}
+                    <a
+                      href={CLINIC_SOCIALS[1].href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="p-3 border border-border bg-card hover:bg-accent hover:text-white hover:border-accent flex flex-col items-center justify-center gap-1.5 group transition-all duration-200 active:scale-[0.97]"
+                    >
+                      <svg className="size-4 text-accent group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                      </svg>
+                      <span className="text-[10px] font-bold tracking-wider uppercase">Instagram</span>
+                      <span className="text-[9px] text-muted-foreground group-hover:text-white/80 font-light truncate max-w-full">{CLINIC_SOCIALS[1].handle}</span>
+                    </a>
+
+                    {/* TikTok */}
+                    <a
+                      href={CLINIC_SOCIALS[2].href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="p-3 border border-border bg-card hover:bg-accent hover:text-white hover:border-accent flex flex-col items-center justify-center gap-1.5 group transition-all duration-200 active:scale-[0.97]"
+                    >
+                      <svg className="size-4 text-accent group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                      </svg>
+                      <span className="text-[10px] font-bold tracking-wider uppercase">TikTok</span>
+                      <span className="text-[9px] text-muted-foreground group-hover:text-white/80 font-light truncate max-w-full">{CLINIC_SOCIALS[2].handle}</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-border">
                   <p className="text-sm text-muted-foreground font-light leading-relaxed">
                     Consultations are by appointment only. We welcome you during our clinical hours.
                   </p>
@@ -164,16 +196,16 @@ const Contact = () => {
           </div>
         </div>
 
-        <div className="w-full h-[420px] md:h-[480px] grayscale-[0.5] hover:grayscale-0 transition-all duration-1000">
+        <div className="w-full h-[450px] md:h-[500px] border-y border-border bg-muted/20">
           <iframe
-            title="Bosphorus Clinic Location"
-            src={`${CLINIC_ADDRESS.mapsUrl}&output=embed&z=16`}
+            title="Bosphorus Dermatology and aesthetic center"
+            src={CLINIC_ADDRESS.embedUrl}
             width="100%"
             height="100%"
             style={{ border: 0 }}
-            allowFullScreen={false}
+            allowFullScreen
             loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
+            referrerPolicy="strict-origin-when-cross-origin"
           />
         </div>
       </section>

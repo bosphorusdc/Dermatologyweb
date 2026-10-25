@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react";
+import { Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ServiceMediaPlaceholderProps {
@@ -55,7 +55,7 @@ export function ServiceMediaPlaceholder({
 
         <div className="absolute top-5 left-5 flex items-center gap-2">
           <div className="w-6 h-6 border border-white/10 flex items-center justify-center">
-            <Sparkles className="h-3 w-3 text-accent/70" />
+            <Activity className="h-3 w-3 text-accent/70" />
           </div>
           <div className="h-px w-8 bg-accent/40" />
         </div>
@@ -72,7 +72,7 @@ export function ServiceMediaPlaceholder({
       <div className="absolute -bottom-1/3 -left-1/4 w-2/3 h-2/3 rounded-full bg-accent/8 blur-2xl" />
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center p-8">
         <div className="w-12 h-12 border border-white/15 flex items-center justify-center mb-6">
-          <Sparkles className="h-5 w-5 text-accent/80" />
+          <Activity className="h-5 w-5 text-accent/80" />
         </div>
         <p className="text-[9px] font-black tracking-[0.5em] text-accent/70 uppercase mb-3">
           Treatment Profile

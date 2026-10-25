@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { Stethoscope } from "lucide-react";
 import { TEAM_MEMBERS, type TeamMember } from "@/data/team";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface TeamCardProps {
   member: TeamMember;
@@ -27,22 +34,22 @@ function TeamCard({ member, index }: TeamCardProps) {
 
   return (
     <div
-      className="group flex flex-col animate-fade-up"
+      className="group flex flex-col h-full bg-card border border-border hover:border-accent transition-all duration-500 shadow-sm hover:shadow-xl overflow-hidden select-none animate-fade-up"
       style={{ animationDelay: `${index * 80}ms` }}
     >
-      {/* ── Photo / Minimal Placeholder Frame ── */}
-      <div className="relative aspect-[3/4] w-full overflow-hidden bg-[hsl(210,17%,12%)] border border-border group-hover:border-accent/50 transition-colors duration-500">
+      {/* ── Portrait Photo Frame ── */}
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-muted">
         {hasCustomPhoto ? (
           <img
             src={member.photo}
             alt={member.name}
             onError={() => setImageError(true)}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
             loading="lazy"
           />
         ) : (
           /* Minimalist Luxury Editorial Placeholder */
-          <div className="w-full h-full relative overflow-hidden bg-gradient-to-b from-[hsl(210,17%,16%)] via-[hsl(210,20%,12%)] to-[hsl(210,17%,9%)] flex flex-col items-center justify-center p-6 text-center select-none">
+          <div className="w-full h-full relative overflow-hidden bg-gradient-to-b from-accent via-accent/90 to-[hsl(196,45%,24%)] text-white flex flex-col items-center justify-center p-6 text-center select-none">
             {/* Ambient light glow */}
             <div className="absolute top-0 right-0 w-36 h-36 bg-accent/15 blur-3xl rounded-full translate-x-1/3 -translate-y-1/3" />
             <div className="absolute bottom-0 left-0 w-36 h-36 bg-accent/10 blur-3xl rounded-full -translate-x-1/3 translate-y-1/3" />
@@ -71,22 +78,17 @@ function TeamCard({ member, index }: TeamCardProps) {
         )}
 
         {/* Subtle bottom vignette */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none opacity-60 group-hover:opacity-80 transition-opacity" />
+        <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent pointer-events-none opacity-60 group-hover:opacity-40 transition-opacity" />
       </div>
 
-      {/* ── Minimalist Editorial Metadata ── */}
-      <div className="pt-5 flex flex-col">
-        <p className="text-[9px] font-black tracking-[0.35em] text-accent uppercase mb-1.5">
+      {/* ── Card Body Enclosure: Name and Role Only ── */}
+      <div className="p-5 flex flex-col justify-center bg-card">
+        <p className="text-[10px] font-bold tracking-[0.25em] text-accent uppercase mb-1.5">
           {member.role}
         </p>
-        <h3 className="font-heading text-xl font-light tracking-tight text-foreground group-hover:text-accent transition-colors duration-300">
+        <h3 className="font-heading text-xl sm:text-2xl font-light tracking-tight text-foreground group-hover:text-accent transition-colors duration-300">
           {member.name}
         </h3>
-        {member.specialty && (
-          <p className="text-xs font-light text-muted-foreground mt-1">
-            {member.specialty}
-          </p>
-        )}
       </div>
     </div>
   );
@@ -94,13 +96,13 @@ function TeamCard({ member, index }: TeamCardProps) {
 
 export function TeamSection() {
   return (
-    <section className="py-32 bg-background border-b border-border">
+    <section className="py-28 md:py-36 bg-background border-b border-border overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
-          {/* ── Section Header ── */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 animate-fade-up">
+          {/* ── Section Header with Carousel Controls ── */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10 animate-fade-up">
             <div>
-              <div className="flex items-center gap-3 mb-5">
+              <div className="flex items-center gap-3 mb-4">
                 <div className="h-px w-8 bg-accent" />
                 <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">
                   Our Specialists
@@ -118,11 +120,32 @@ export function TeamSection() {
             </p>
           </div>
 
-          {/* ── 4-Column Minimal Grid ── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-8">
-            {TEAM_MEMBERS.map((member, index) => (
-              <TeamCard key={member.id} member={member} index={index} />
-            ))}
+          {/* ── Slidable Carousel ── */}
+          <div className="relative">
+            <Carousel
+              opts={{
+                align: "start",
+                loop: false,
+              }}
+              className="w-full"
+            >
+              {/* Navigation Arrows */}
+              <div className="flex justify-end gap-2 mb-4">
+                <CarouselPrevious className="relative inset-auto translate-y-0 h-9 w-9 rounded-none border border-border bg-background hover:bg-muted text-foreground hover:text-accent shadow-none transition-all active:scale-[0.95]" />
+                <CarouselNext className="relative inset-auto translate-y-0 h-9 w-9 rounded-none border border-border bg-background hover:bg-muted text-foreground hover:text-accent shadow-none transition-all active:scale-[0.95]" />
+              </div>
+
+              <CarouselContent className="-ml-6">
+                {TEAM_MEMBERS.map((member, index) => (
+                  <CarouselItem
+                    key={member.id}
+                    className="pl-6 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                  >
+                    <TeamCard member={member} index={index} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
           </div>
         </div>
       </div>

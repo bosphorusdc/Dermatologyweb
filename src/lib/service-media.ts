@@ -1,5 +1,5 @@
 import type { Service } from "@/data/services";
-import logoImg from "@/assets/logo.png";
+import logoImg from "@/assets/derma-logo-transparent.png";
 
 export const CLINIC_LOGO = logoImg;
 

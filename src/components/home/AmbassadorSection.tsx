@@ -1,148 +1,173 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Quote } from "lucide-react";
+import { ArrowRight, Quote, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const ambassadorImg = new URL("../../assets/ambassador.jpg", import.meta.url).href;
+const nebyouImg = new URL("../../assets/ambassador-nebyou.jpg", import.meta.url).href;
+const abrahamImg = new URL("../../assets/ambassador-abraham.jpg", import.meta.url).href;
 
-interface AmbassadorSectionProps {
-  photo?: string;
-  name?: string;
-  role?: string;
-  headline?: string;
-  statement?: string;
+export interface AmbassadorItem {
+  id: string;
+  name: string;
+  role: string;
+  photo: string;
+  statement: string;
+  focus: string;
 }
 
+interface AmbassadorSectionProps {
+  division?: "dermatology" | "school";
+  headline?: string;
+  subheadline?: string;
+  ambassadors?: AmbassadorItem[];
+}
+
+const DEFAULT_CLINIC_AMBASSADORS: AmbassadorItem[] = [
+  {
+    id: "nebyou",
+    name: "Artist Nebyou Indris",
+    role: "Artist & Brand Ambassador",
+    photo: nebyouImg,
+    statement:
+      "Being in front of the camera every day, my skin needs to look and feel healthy from within. Bosphorus gives me real medical-grade care with visible results that keep me feeling confident on and off camera.",
+    focus: "Medical Dermatology & Restorative Aesthetics",
+  },
+  {
+    id: "abraham",
+    name: "Influencer Abraham Zereay (1 Birr)",
+    role: "Social Media Brand Ambassador",
+    photo: abrahamImg,
+    statement:
+      "Authentic skincare isn't about hype—it's about scientific protocols and expert specialists. Bosphorus represents the gold standard in modern clinical dermatology in Ethiopia.",
+    focus: "Aesthetic Precision & Social Advocacy",
+  },
+];
+
+const DEFAULT_SCHOOL_AMBASSADORS: AmbassadorItem[] = [
+  {
+    id: "nebyou",
+    name: "Artist Nebyou Indris",
+    role: "Artist & Brand Ambassador",
+    photo: nebyouImg,
+    statement:
+      "Proper clinical training is the foundation of real skincare excellence. Bosphorus Cosmetology School is raising the standard by giving students hands-on laser practice and certified skills for a successful career.",
+    focus: "Certified Aesthetician Pathways",
+  },
+  {
+    id: "abraham",
+    name: "Influencer Abraham Zereay (1 Birr)",
+    role: "Social Media Brand Ambassador",
+    photo: abrahamImg,
+    statement:
+      "Empowering a new generation of certified skincare specialists with world-class devices and scientific rigor right here in Addis Ababa.",
+    focus: "Device Mastery & Creative Industry",
+  },
+];
+
 export function AmbassadorSection({
-  photo = ambassadorImg,
-  name = "Nebyou Indris",
-  role = "Artist & Brand Ambassador",
-  headline = "Confidence starts with authentic skin health.",
-  statement = "Being in front of the camera every day, my skin needs to look and feel healthy from within. Bosphorus gives me real medical-grade care with visible results that keep me feeling confident on and off camera.",
+  division = "dermatology",
+  headline,
+  subheadline,
+  ambassadors,
 }: AmbassadorSectionProps) {
-  const [imageError, setImageError] = useState(false);
+  const isSchool = division === "school";
+  const list =
+    ambassadors || (isSchool ? DEFAULT_SCHOOL_AMBASSADORS : DEFAULT_CLINIC_AMBASSADORS);
 
-  const initials = name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+  const title =
+    headline ||
+    (isSchool
+      ? "Two Ambassadors. One Vision for Skincare Education."
+      : "Two Ambassadors. One Standard of Clinical Excellence.");
 
-  const hasCustomPhoto =
-    !imageError && photo && photo !== "" && photo !== "/placeholder.svg";
+  const desc =
+    subheadline ||
+    (isSchool
+      ? "Celebrating our partnership with acclaimed artists Nebyou Indris and Abraham Zeray, championing accredited cosmetology education and clinical device training in Ethiopia."
+      : "Celebrating our official partnership with acclaimed artists Nebyou Indris and Abraham Zeray, championing authentic skin health, medical dermatology, and transformative aesthetic care.");
 
   return (
-    <section className="py-28 md:py-36 bg-background border-b border-border relative overflow-hidden">
+    <section className="py-24 md:py-32 bg-background border-b border-border relative overflow-hidden">
       <div className="container mx-auto px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div className="max-w-7xl mx-auto">
           
-          {/* ── Left Column: Editorial Photo Frame ── */}
-          <div className="lg:col-span-5 lg:col-start-1 animate-fade-up">
-            <div className="relative aspect-[3/4] w-full max-w-md mx-auto overflow-hidden bg-[hsl(210,17%,12%)] border border-border group hover:border-accent/40 transition-colors duration-500 shadow-sm">
-              {hasCustomPhoto ? (
-                <img
-                  src={photo}
-                  alt={name}
-                  onError={() => setImageError(true)}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                  loading="lazy"
-                />
-              ) : (
-                /* Luxury Styled Placeholder */
-                <div className="w-full h-full relative overflow-hidden bg-gradient-to-b from-[hsl(210,17%,16%)] via-[hsl(210,20%,12%)] to-[hsl(210,17%,8%)] flex flex-col items-center justify-center p-8 text-center select-none">
-                  {/* Soft ambient lighting */}
-                  <div className="absolute top-0 right-0 w-44 h-44 bg-accent/20 blur-3xl rounded-full translate-x-1/4 -translate-y-1/4" />
-                  <div className="absolute bottom-0 left-0 w-44 h-44 bg-accent/10 blur-3xl rounded-full -translate-x-1/4 translate-y-1/4" />
-
-                  {/* Corner accents */}
-                  <div className="absolute top-4 left-4 flex items-center gap-2">
-                    <div className="w-5 h-5 border border-white/15 flex items-center justify-center">
-                      <Sparkles className="h-2.5 w-2.5 text-accent/80" />
-                    </div>
-                    <div className="h-px w-6 bg-accent/40" />
-                  </div>
-                  <div className="absolute bottom-4 right-4 w-6 h-6 border-b border-r border-accent/40" />
-
-                  {/* Avatar Icon */}
-                  <div className="relative z-10 flex flex-col items-center">
-                    <div className="w-20 h-20 rounded-full border border-white/15 bg-white/5 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:border-accent/70 group-hover:scale-105 transition-all duration-500 shadow-inner">
-                      <span className="font-heading text-2xl font-light tracking-widest text-white/90">
-                        {initials}
-                      </span>
-                    </div>
-                    <p className="text-[8px] font-black tracking-[0.4em] text-accent uppercase">
-                      Ambassador Spotlight
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
-
-              {/* Floating Badge */}
-              <div className="absolute top-4 right-4 bg-background/90 backdrop-blur-md px-3 py-1 text-[8px] font-black tracking-[0.25em] text-foreground uppercase border border-border">
-                Brand Ambassador
-              </div>
-
-              {/* Bottom tag */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                <p className="text-[8px] font-black tracking-[0.3em] text-accent uppercase mb-1">
-                  The Face of Bosphorus
-                </p>
-                <h3 className="font-heading text-xl font-light tracking-tight text-white">
-                  {name}
-                </h3>
-              </div>
+          {/* Header */}
+          <div className="max-w-3xl mb-16 md:mb-20 animate-fade-up">
+            <div className="inline-flex items-center gap-2 mb-3">
+              <div className="h-px w-8 bg-accent" />
+              <span className="text-[10px] font-black tracking-[0.3em] text-accent uppercase">
+                Official Brand Ambassadors
+              </span>
             </div>
+            <h2 className="font-heading text-3xl sm:text-5xl md:text-6xl font-light tracking-tight text-foreground leading-[1.05] mb-4">
+              {title}
+            </h2>
+            <p className="text-muted-foreground text-sm md:text-base font-light leading-relaxed">
+              {desc}
+            </p>
           </div>
 
-          {/* ── Right Column: Influencer Perspective & Story ── */}
-          <div className="lg:col-span-7 animate-fade-up" style={{ animationDelay: "100ms" }}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="h-px w-8 bg-accent" />
-              <span className="text-[9px] font-black tracking-[0.4em] text-accent uppercase">
-                Our Ambassador
-              </span>
-            </div>
+          {/* Dual Ambassador Cards Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
+            {list.map((item, index) => (
+              <div
+                key={item.id}
+                className="group border border-border bg-card flex flex-col sm:flex-row overflow-hidden hover:border-accent/40 transition-all duration-500 shadow-sm animate-fade-up"
+                style={{ animationDelay: `${index * 120}ms` }}
+              >
+                {/* Full Uncropped Photo Column */}
+                <div className="relative md:w-1/2 aspect-[3/4] overflow-hidden bg-neutral-950 shrink-0 flex items-center justify-center">
+                  <img
+                    src={item.photo}
+                    alt={item.name}
+                    className="w-full h-full object-contain group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute top-3 left-3 bg-background/90 backdrop-blur-md px-2.5 py-1 text-[8px] font-black tracking-widest text-foreground uppercase border border-border">
+                    Brand Ambassador
+                  </div>
+                </div>
 
-            <h2 className="font-heading text-4xl md:text-5xl font-light tracking-tighter text-foreground leading-[0.98] mb-8">
-              Real skin, <br />
-              <span className="italic font-light text-muted-foreground">
-                unfiltered confidence.
-              </span>
-            </h2>
+                {/* Content Column */}
+                <div className="p-6 sm:p-8 flex flex-col justify-between flex-1">
+                  <div>
+                    <div className="flex items-center gap-2 text-accent text-[9px] font-bold tracking-widest uppercase mb-2">
+                      <Sparkles className="w-3 h-3" />
+                      <span>{item.focus}</span>
+                    </div>
 
-            {/* Influencer Perspective Statement */}
-            <div className="relative mb-8 pl-6 border-l-2 border-accent/60">
-              <Quote className="h-5 w-5 text-accent/40 mb-3" />
-              <p className="text-lg md:text-xl font-light text-foreground/90 leading-relaxed italic mb-4">
-                "{statement}"
-              </p>
-              <div>
-                <p className="font-heading text-base font-medium text-foreground tracking-tight">
-                  {name}
-                </p>
-                <p className="text-xs font-light text-muted-foreground">
-                  {role}
-                </p>
+                    <h3 className="font-heading text-2xl font-light text-foreground tracking-tight mb-1">
+                      {item.name}
+                    </h3>
+
+                    <p className="text-xs text-muted-foreground font-light mb-6">
+                      {item.role}
+                    </p>
+
+                    <div className="relative pl-4 border-l-2 border-accent/60 mb-6">
+                      <Quote className="w-3.5 h-3.5 text-accent/50 mb-2" />
+                      <p className="text-xs md:text-sm text-foreground/80 font-light italic leading-relaxed">
+                        "{item.statement}"
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-border/60 flex items-center justify-between">
+                    <span className="text-[9px] font-black tracking-widest text-muted-foreground uppercase">
+                      Bosphorus Partner
+                    </span>
+                    <Link
+                      to={isSchool ? "/school/admissions" : "/contact"}
+                      className="inline-flex items-center gap-1.5 text-[10px] font-black tracking-widest text-accent uppercase hover:underline group/link"
+                    >
+                      <span>{isSchool ? "Admissions" : "Consultation"}</span>
+                      <ArrowRight className="w-3 h-3 group-hover/link:translate-x-0.5 transition-transform" />
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            {/* CTA */}
-            <div className="pt-2">
-              <Link to="/contact">
-                <Button
-                  size="lg"
-                  className="rounded-none h-12 px-8 text-[10px] font-black tracking-[0.25em] bg-accent hover:bg-accent/90 text-accent-foreground border-0 shadow-none transition-all hover:scale-[1.02] active:scale-[0.98] group uppercase"
-                >
-                  Book Your Consultation
-                  <ArrowRight className="ml-3 h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-300" />
-                </Button>
-              </Link>
-            </div>
-
+            ))}
           </div>
 
         </div>

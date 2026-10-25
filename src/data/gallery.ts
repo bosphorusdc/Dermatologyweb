@@ -1,8 +1,11 @@
 // Clinic & Facility
-const clinicInterior = new URL("../assets/clinic-interior.jpg", import.meta.url).href;
-const heroClinic = new URL("../assets/hero-clinic.jpg", import.meta.url).href;
+const clinicInterior = new URL("../assets/Images/photo_8_2026-03-25_21-38-08.jpg", import.meta.url).href;
+const heroClinic = new URL("../assets/Images/photo_1_2026-03-25_21-38-08.jpg", import.meta.url).href;
 const heroBeauty = new URL("../assets/hero-beauty.jpg", import.meta.url).href;
 const ambassadorImg = new URL("../assets/ambassador.jpg", import.meta.url).href;
+const ambassadorNebyouImg = new URL("../assets/ambassador-nebyou.jpg", import.meta.url).href;
+const ambassadorAbrahamImg = new URL("../assets/ambassador-abraham.jpg", import.meta.url).href;
+const ambassadorAbrahamSigningImg = new URL("../assets/ambassador-abraham-signing.jpg", import.meta.url).href;
 
 // Clinical Procedure Photos (1 to 10)
 const procPhoto1 = new URL("../assets/Images/photo_1_2026-03-25_21-38-08.jpg", import.meta.url).href;
@@ -431,15 +434,45 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     tags: ["Editorial", "Brand Vision"],
   },
 
-  // ── Brand Ambassador ──
+  // ── Brand Ambassadors ──
   {
     id: "a-nebyou",
     type: "image",
-    src: ambassadorImg,
-    title: "Nebyou Indris — Official Brand Ambassador Signing",
+    src: ambassadorNebyouImg,
+    title: "Artist Nebyou Indris — Official Brand Ambassador",
     category: "ambassador",
     categoryLabel: "Brand Ambassador",
-    description: "Official signing ceremony welcoming celebrated artist Nebyou Indris to Bosphorus Dermatology & Aesthetics Center.",
-    tags: ["Nebyou Indris", "Ambassador", "Partnership"],
+    description: "Celebrated artist Nebyou Indris representing Bosphorus clinical excellence and authentic skin health.",
+    tags: ["Nebyou Indris", "Ambassador", "Dermatology"],
+  },
+  {
+    id: "a-abraham",
+    type: "image",
+    src: ambassadorAbrahamImg,
+    title: "Influencer Abraham Zereay (1 Birr) — Social Media Brand Ambassador",
+    category: "ambassador",
+    categoryLabel: "Brand Ambassador",
+    description: "Acclaimed media personality and influencer Abraham Zereay (1 Birr) representing Bosphorus aesthetic precision.",
+    tags: ["Abraham Zereay", "1 Birr", "Ambassador", "Social Media"],
+  },
+  {
+    id: "a-signing-abraham",
+    type: "image",
+    src: ambassadorAbrahamSigningImg,
+    title: "Official Partnership Signing — Abraham Zereay (1 Birr)",
+    category: "ambassador",
+    categoryLabel: "Brand Ambassador",
+    description: "Official contract agreement ceremony welcoming Influencer Abraham Zereay (1 Birr) to Bosphorus Medical Solutions PLC.",
+    tags: ["Abraham Zereay", "1 Birr", "Partnership", "Ceremony"],
+  },
+  {
+    id: "a-signing-nebyou",
+    type: "image",
+    src: ambassadorImg,
+    title: "Official Partnership Signing — Artist Nebyou Indris",
+    category: "ambassador",
+    categoryLabel: "Brand Ambassador",
+    description: "Official agreement ceremony welcoming celebrated artist Nebyou Indris to Bosphorus Medical Solutions PLC.",
+    tags: ["Nebyou Indris", "Partnership", "Ceremony"],
   },
 ];

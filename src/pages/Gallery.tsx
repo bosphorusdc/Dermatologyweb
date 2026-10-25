@@ -16,7 +16,7 @@ import {
   ChevronRight,
   Filter,
   Calendar,
-  Sparkles,
+  Layers,
   Camera,
   Film,
   Building2,
@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 
 const CATEGORY_TABS: { key: GalleryCategory; label: string; icon: LucideIcon }[] = [
-  { key: "all", label: "All Media", icon: Sparkles },
+  { key: "all", label: "All Media", icon: Layers },
   { key: "videos", label: "Live Procedures (Videos)", icon: Film },
   { key: "results", label: "Clinical Results", icon: Camera },
   { key: "procedures", label: "Clinical Practice", icon: Camera },
@@ -90,34 +90,8 @@ export default function Gallery() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
 
-      {/* ── 01: Hero Section ── */}
-      <section className="pt-40 pb-20 bg-background border-b border-border relative overflow-hidden">
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl">
-            <div className="flex items-center gap-3 mb-6 animate-fade-up">
-              <div className="h-px w-8 bg-accent" />
-              <span className="text-[10px] font-black tracking-[0.4em] text-accent uppercase">
-                Visual Documentation
-              </span>
-            </div>
-
-            <h1 className="font-heading text-5xl md:text-7xl font-light tracking-tighter text-foreground leading-[0.95] mb-6 animate-fade-up">
-              Documented Precision.<br />
-              <span className="font-medium">The Gallery.</span>
-            </h1>
-
-            <p
-              className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed max-w-2xl animate-fade-up"
-              style={{ animationDelay: "100ms" }}
-            >
-              Explore live clinical procedures, authentic patient results, clinic treatment suites, and official partnership moments at Bosphorus Dermatology & Aesthetics Center.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 02: Gallery Filter Bar & Grid ── */}
-      <section className="py-20 bg-background">
+      {/* ── Gallery Filter Bar & Grid ── */}
+      <section className="pt-32 pb-20 md:pt-36 md:pb-24 bg-background">
         <div className="container mx-auto px-6">
           
           {/* Category Tabs */}
@@ -136,8 +110,8 @@ export default function Gallery() {
                   onClick={() => setActiveCategory(tab.key)}
                   className={`h-11 px-5 text-[11px] font-bold tracking-[0.15em] uppercase transition-all flex items-center gap-2.5 border rounded-none ${
                     isActive
-                      ? "bg-foreground text-background border-foreground shadow-sm"
-                      : "bg-background text-muted-foreground border-border hover:border-foreground/40 hover:text-foreground"
+                      ? "bg-accent text-white border-accent shadow-sm"
+                      : "bg-background text-muted-foreground border-border hover:border-accent hover:text-foreground"
                   }`}
                 >
                   <Icon className="h-3.5 w-3.5" />
@@ -145,7 +119,7 @@ export default function Gallery() {
                   <span
                     className={`text-[10px] px-1.5 py-0.5 rounded-full ${
                       isActive
-                        ? "bg-background/20 text-background"
+                        ? "bg-white/20 text-white"
                         : "bg-muted text-muted-foreground"
                     }`}
                   >
@@ -198,7 +172,7 @@ export default function Gallery() {
                         decoding="async"
                       />
                       {/* Photo Badge */}
-                      <div className="absolute top-3 left-3 bg-foreground/90 backdrop-blur-md px-2.5 py-1 text-[8px] font-bold tracking-widest text-background uppercase border border-border/20 pointer-events-none z-10">
+                      <div className="absolute top-3 left-3 bg-accent text-white backdrop-blur-md px-2.5 py-1 text-[8px] font-bold tracking-widest uppercase border border-white/20 pointer-events-none z-10">
                         {item.categoryLabel}
                       </div>
                     </>
@@ -213,32 +187,11 @@ export default function Gallery() {
                   </div>
                 </div>
 
-                {/* Caption Details */}
-                <div className="p-5 flex flex-col flex-1 justify-between bg-card">
-                  <div>
-                    <span className="text-[9px] font-black tracking-[0.25em] text-accent uppercase mb-1 block">
-                      {item.categoryLabel}
-                    </span>
-                    <h3 className="font-heading text-lg font-medium text-foreground tracking-tight group-hover:text-accent transition-colors mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground font-light leading-relaxed line-clamp-2">
-                      {item.description}
-                    </p>
-                  </div>
-
-                  {item.tags && item.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 pt-4 mt-4 border-t border-border/50">
-                      {item.tags.map((tag, i) => (
-                        <span
-                          key={i}
-                          className="text-[9px] tracking-wider uppercase px-2 py-0.5 bg-muted/60 text-muted-foreground font-medium"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                {/* Caption Title Only */}
+                <div className="p-4 bg-card border-t border-border flex items-center justify-between">
+                  <h3 className="font-heading text-base font-medium text-foreground tracking-tight group-hover:text-accent transition-colors truncate">
+                    {item.title}
+                  </h3>
                 </div>
               </div>
             ))}
@@ -264,8 +217,8 @@ export default function Gallery() {
 
               <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
                 <Link to="/contact" className="w-full sm:w-auto">
-                  <Button className="bg-foreground hover:bg-foreground/90 text-background rounded-none h-14 px-8 text-[11px] font-black tracking-[0.25em] uppercase w-full sm:w-auto transition-all hover:scale-[1.02] active:scale-[0.98] shadow-none flex items-center justify-center gap-2.5">
-                    <Calendar className="h-4 w-4 text-accent" />
+                  <Button className="bg-accent hover:bg-accent/90 text-white rounded-none h-14 px-8 text-[11px] font-black tracking-[0.25em] uppercase w-full sm:w-auto transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md flex items-center justify-center gap-2.5">
+                    <Calendar className="h-4 w-4 text-white" />
                     <span>Book Consultation</span>
                   </Button>
                 </Link>

@@ -5,11 +5,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ResponsiveDX } from "responsive-dx";
 import Home from "./pages/Home";
+import DermatologyHome from "./pages/DermatologyHome";
 import About from "./pages/About";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
 import Contact from "./pages/Contact";
 import Gallery from "./pages/Gallery";
+import SchoolHome from "./pages/SchoolHome";
+import SchoolCurriculum from "./pages/SchoolCurriculum";
+import SchoolAdmissions from "./pages/SchoolAdmissions";
+import SchoolAbout from "./pages/SchoolAbout";
+import SchoolContact from "./pages/SchoolContact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,12 +27,25 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Main Entry Hub / Dual-Category Home */}
           <Route path="/" element={<Home />} />
+
+          {/* Dermatology Center Routes */}
+          <Route path="/dermatology" element={<DermatologyHome />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/services/:slug" element={<ServiceDetail />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
+
+          {/* Cosmetology School Center Routes */}
+          <Route path="/school" element={<SchoolHome />} />
+          <Route path="/school/curriculum" element={<SchoolCurriculum />} />
+          <Route path="/school/admissions" element={<SchoolAdmissions />} />
+          <Route path="/school/about" element={<SchoolAbout />} />
+          <Route path="/school/contact" element={<SchoolContact />} />
+
+          {/* Fallback */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

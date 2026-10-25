@@ -1,97 +1,132 @@
 import { Link } from "react-router-dom";
-import { MapPin, Clock, Phone } from "lucide-react";
-import logo from "@/assets/logo.png";
-import { services } from "@/data/services";
-import { CLINIC_ADDRESS, CLINIC_HOURS_DISPLAY, CLINIC_PHONE, CLINIC_PHONE_HREF, CLINIC_OVERVIEW } from "@/data/clinic";
+import { Phone, ArrowRight, Facebook } from "lucide-react";
+import logo from "@/assets/derma-logo-transparent.png";
+import {
+  CLINIC_NAME,
+  CLINIC_ADDRESS,
+  CLINIC_PHONE,
+  CLINIC_PHONE_HREF,
+  CLINIC_SOCIALS,
+} from "@/data/clinic";
 
 export const Footer = () => {
   return (
-    <footer className="bg-background border-t border-border">
-      <div className="container mx-auto px-6">
-
-        {/* Main row */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 py-16">
-
-          {/* Brand */}
-          <div className="md:col-span-4">
-            <Link to="/" className="inline-block mb-6 group">
+    <footer className="bg-background text-foreground border-t border-border">
+      <div className="container mx-auto px-6 py-12 md:py-14 max-w-5xl">
+        <div className="flex flex-col items-center text-center gap-8">
+          
+          {/* ── Row 1 (Center): Brand Identity & Address ── */}
+          <div className="flex flex-col items-center gap-3">
+            <Link to="/dermatology" className="group">
               <img
                 src={logo}
-                alt="Bosphorus Dermatology"
-                className="h-8 object-contain opacity-90 group-hover:opacity-60 transition-opacity"
+                alt="Bosphorus Dermatology & Aesthetic Center"
+                className="h-14 sm:h-16 md:h-20 w-auto object-contain transition-opacity duration-200 group-hover:opacity-80"
               />
             </Link>
-            <p className="text-muted-foreground text-sm font-light leading-relaxed max-w-xs">
-              {CLINIC_OVERVIEW}
+            <p className="text-[11px] text-muted-foreground font-light max-w-md">
+              {CLINIC_ADDRESS.building} • {CLINIC_ADDRESS.area}
             </p>
           </div>
 
-          {/* Nav */}
-          <div className="md:col-span-2 md:col-start-6">
-            <p className="text-[9px] font-black tracking-[0.4em] text-foreground/40 uppercase mb-5">Pages</p>
-            <nav className="flex flex-col gap-3">
-              {[
-                { name: "Home", href: "/" },
-                { name: "About", href: "/about" },
-                { name: "Services", href: "/services" },
-                { name: "Gallery", href: "/gallery" },
-                { name: "Contact", href: "/contact" },
-              ].map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </nav>
-          </div>
+          {/* ── Row 2 (Center): Navigation Links ── */}
+          <nav className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2.5 text-xs text-muted-foreground font-medium">
+            <Link to="/dermatology" className="hover:text-foreground transition-colors">
+              Home
+            </Link>
+            <Link to="/services" className="hover:text-foreground transition-colors">
+              Services
+            </Link>
+            <Link to="/gallery" className="hover:text-foreground transition-colors">
+              Gallery
+            </Link>
+            <Link to="/about" className="hover:text-foreground transition-colors">
+              About
+            </Link>
+            <Link to="/contact" className="hover:text-foreground transition-colors">
+              Contact
+            </Link>
+            <Link
+              to="/school"
+              className="text-accent hover:underline font-semibold flex items-center gap-1 transition-colors"
+            >
+              <span>Cosmetology School</span>
+              <ArrowRight className="size-3" />
+            </Link>
+          </nav>
 
-          {/* Treatments */}
-          <div className="md:col-span-2">
-            <p className="text-[9px] font-black tracking-[0.4em] text-foreground/40 uppercase mb-5">Treatments</p>
-            <nav className="flex flex-col gap-3">
-              {services.slice(0, 6).map((service) => (
-                <Link
-                  key={service.slug}
-                  to={`/services/${service.slug}`}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light truncate"
-                >
-                  {service.title}
-                </Link>
-              ))}
-            </nav>
-          </div>
+          {/* ── Row 3 (Center): Social Media Icons & Direct Phone ── */}
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {/* Facebook */}
+            <a
+              href={CLINIC_SOCIALS[0].href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Facebook"
+              className="size-8 rounded-none border border-border bg-background hover:bg-muted hover:border-accent hover:text-accent flex items-center justify-center text-muted-foreground transition-all active:scale-[0.95]"
+            >
+              <Facebook className="size-3.5" />
+            </a>
 
-          {/* Contact */}
-          <div className="md:col-span-3 md:col-start-10">
-            <p className="text-[9px] font-black tracking-[0.4em] text-foreground/40 uppercase mb-5">Contact</p>
-            <div className="flex flex-col gap-4">
-              <div className="flex items-start gap-3">
-                <MapPin className="h-3.5 w-3.5 mt-0.5 text-accent shrink-0" />
-                <span className="text-sm text-muted-foreground font-light">{CLINIC_ADDRESS.short}</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <Phone className="h-3.5 w-3.5 mt-0.5 text-accent shrink-0" />
-                <a href={CLINIC_PHONE_HREF} className="text-sm text-muted-foreground font-light hover:text-foreground transition-colors">
-                  {CLINIC_PHONE}
-                </a>
-              </div>
-              <div className="flex items-start gap-3">
-                <Clock className="h-3.5 w-3.5 mt-0.5 text-accent shrink-0" />
-                <span className="text-sm text-muted-foreground font-light">{CLINIC_HOURS_DISPLAY}</span>
-              </div>
-            </div>
+            {/* Instagram */}
+            <a
+              href={CLINIC_SOCIALS[1].href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              className="size-8 rounded-none border border-border bg-background hover:bg-muted hover:border-accent hover:text-accent flex items-center justify-center text-muted-foreground transition-all active:scale-[0.95]"
+            >
+              <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+              </svg>
+            </a>
+
+            {/* TikTok */}
+            <a
+              href={CLINIC_SOCIALS[2].href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="TikTok"
+              className="size-8 rounded-none border border-border bg-background hover:bg-muted hover:border-accent hover:text-accent flex items-center justify-center text-muted-foreground transition-all active:scale-[0.95]"
+            >
+              <svg className="size-3.5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+              </svg>
+            </a>
+
+            <div className="h-4 w-px bg-border/60 mx-1 hidden sm:block" />
+
+            {/* Direct Phone */}
+            <a
+              href={CLINIC_PHONE_HREF}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-border hover:border-accent bg-background text-[11px] font-bold text-foreground hover:text-accent transition-all active:scale-[0.95]"
+            >
+              <Phone className="size-3 text-accent" />
+              <span>{CLINIC_PHONE}</span>
+            </a>
           </div>
 
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-border py-6 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <p className="text-[10px] text-muted-foreground/50 tracking-widest uppercase">
-            © {new Date().getFullYear()} Bosphorus Dermatology & Aesthetics Center
-          </p>
+        {/* ── Bottom Micro-Bar (Center) ── */}
+        <div className="mt-10 pt-6 border-t border-border/40 flex flex-col sm:flex-row items-center justify-center gap-3 text-[11px] text-muted-foreground font-light text-center">
+          <p>© {new Date().getFullYear()} {CLINIC_NAME}. All rights reserved.</p>
+          <span className="hidden sm:inline text-border">•</span>
+          <div className="flex items-center gap-3">
+            <Link to="/dermatology" className="text-accent font-medium hover:underline">
+              Dermatology
+            </Link>
+            <span className="text-border">•</span>
+            <Link to="/school" className="hover:text-foreground transition-colors">
+              School
+            </Link>
+            <span className="text-border">•</span>
+            <Link to="/" className="hover:text-foreground transition-colors">
+              Portal
+            </Link>
+          </div>
         </div>
 
       </div>

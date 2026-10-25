@@ -45,8 +45,8 @@ function ServiceCardMedia({ service }: { service: Service }) {
         />
 
         {/* Live Video Indicator Badge */}
-        <div className="absolute top-3 left-3 bg-black/75 backdrop-blur-md px-2.5 py-1 text-[8px] font-bold tracking-widest text-white uppercase flex items-center gap-1.5 border border-white/10 pointer-events-none z-10">
-          <Play className="h-2.5 w-2.5 fill-accent text-accent" />
+        <div className="absolute top-3 left-3 bg-accent/90 backdrop-blur-md px-2.5 py-1 text-[8px] font-bold tracking-widest text-white uppercase flex items-center gap-1.5 border border-white/20 pointer-events-none z-10">
+          <Play className="h-2.5 w-2.5 fill-white text-white" />
           <span>Live Video</span>
         </div>
 
@@ -141,33 +141,30 @@ export function TreatmentsCarousel({ services }: TreatmentsCarouselProps) {
             >
               <Link
                 to={`/services/${service.slug}`}
-                className="group flex flex-col h-full bg-card border border-border hover:border-accent/60 transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md"
+                className="group flex flex-col h-full bg-accent text-white border border-accent/20 hover:border-accent hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden shadow-md"
               >
-                {/* Media Header (Video Thumbnail / Image / Logo) */}
-                <div className="relative aspect-[16/11] w-full overflow-hidden">
+                {/* Media Header (Enlarged, Dominant Visual Card) */}
+                <div className="relative aspect-[4/5] w-full overflow-hidden bg-muted">
                   <ServiceCardMedia service={service} />
 
                   {/* Arrow Icon on hover */}
-                  <div className="absolute top-3 right-3 w-8 h-8 bg-background/90 backdrop-blur-sm border border-border/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-10">
+                  <div className="absolute top-3 right-3 w-8 h-8 bg-white/95 backdrop-blur-sm border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 shadow-sm">
                     <ArrowRight className="h-3.5 w-3.5 text-accent group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </div>
 
-                {/* Content Details */}
-                <div className="p-5 flex flex-col flex-1 justify-between bg-card">
+                {/* Content Details: Compact Small Section */}
+                <div className="p-3.5 sm:p-4 flex flex-col justify-between bg-accent text-white">
                   <div>
-                    <p className="text-[9px] font-black tracking-[0.3em] text-accent uppercase mb-1.5">
+                    <p className="text-[8px] font-black tracking-[0.25em] text-white/70 uppercase mb-1">
                       Clinical Protocol
                     </p>
-                    <h3 className="font-heading text-lg font-medium text-foreground tracking-tight group-hover:text-accent transition-colors mb-2">
+                    <h3 className="font-heading text-base sm:text-lg font-light text-white tracking-tight truncate">
                       {service.title}
                     </h3>
-                    <p className="text-xs text-muted-foreground font-light leading-relaxed line-clamp-2">
-                      {service.description}
-                    </p>
                   </div>
 
-                  <div className="pt-4 mt-4 border-t border-border/60 flex items-center justify-between text-[10px] font-bold tracking-widest uppercase text-foreground/80 group-hover:text-accent transition-colors">
+                  <div className="pt-2.5 mt-2.5 border-t border-white/15 flex items-center justify-between text-[9px] font-bold tracking-widest uppercase text-white/90 group-hover:text-white transition-colors">
                     <span>Explore Treatment</span>
                     <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
                   </div>

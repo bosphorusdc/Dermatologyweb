@@ -9,7 +9,6 @@ import {
   ArrowRight,
   Search,
   Play,
-  Sparkles,
   Stethoscope,
   Scissors,
   CheckCircle2,
@@ -102,8 +101,8 @@ function ServiceCardMedia({ service }: { service: Service }) {
         />
 
         {/* Video Badge */}
-        <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-md px-2.5 py-1 text-[8px] font-bold tracking-widest text-white uppercase flex items-center gap-1.5 border border-white/10 pointer-events-none z-10">
-          <Play className="h-2.5 w-2.5 fill-accent text-accent" />
+        <div className="absolute top-3 left-3 bg-accent/90 backdrop-blur-md px-2.5 py-1 text-[8px] font-bold tracking-widest text-white uppercase flex items-center gap-1.5 border border-white/20 pointer-events-none z-10">
+          <Play className="h-2.5 w-2.5 fill-white text-white" />
           <span>Live Video</span>
         </div>
 
@@ -126,7 +125,7 @@ function ServiceCardMedia({ service }: { service: Service }) {
 
         {/* Before / After badge if available */}
         {(service.images?.before || service.images?.after) && (
-          <div className="absolute top-3 left-3 bg-foreground/90 backdrop-blur-md px-2.5 py-1 text-[8px] font-bold tracking-widest text-background uppercase border border-border/20 pointer-events-none z-10">
+          <div className="absolute top-3 left-3 bg-accent text-white backdrop-blur-md px-2.5 py-1 text-[8px] font-bold tracking-widest uppercase border border-white/20 pointer-events-none z-10">
             Clinical Results
           </div>
         )}
@@ -174,34 +173,8 @@ const Services = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      {/* ── 01: Hero Section ── */}
-      <section className="pt-40 pb-20 bg-background border-b border-border relative overflow-hidden">
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl">
-            <div className="flex items-center gap-3 mb-6 animate-fade-up">
-              <div className="h-px w-8 bg-accent" />
-              <span className="text-[10px] font-black tracking-[0.4em] text-accent uppercase">
-                Clinical Portfolio
-              </span>
-            </div>
-
-            <h1 className="font-heading text-5xl md:text-7xl font-light tracking-tighter text-foreground leading-[0.95] mb-6 animate-fade-up">
-              Specialized Care.<br />
-              <span className="font-medium">Definitive Results.</span>
-            </h1>
-
-            <p
-              className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed max-w-2xl animate-fade-up"
-              style={{ animationDelay: "100ms" }}
-            >
-              Explore our full directory of medical dermatology, aesthetic medicine, laser therapies, and hair restoration procedures.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 02: Controls & Grid Section ── */}
-      <section className="py-20 bg-background">
+      {/* ── Services Directory & Controls ── */}
+      <section className="pt-32 pb-20 md:pt-36 md:pb-24 bg-background">
         <div className="container mx-auto px-6">
           
           {/* Filter Bar & Search Toolbar */}
@@ -224,15 +197,15 @@ const Services = () => {
                     onClick={() => setActiveCategory(cat.key)}
                     className={`h-11 px-5 text-[11px] font-bold tracking-[0.15em] uppercase transition-all flex items-center gap-2.5 border rounded-none ${
                       isActive
-                        ? "bg-foreground text-background border-foreground shadow-sm"
-                        : "bg-background text-muted-foreground border-border hover:border-foreground/40 hover:text-foreground"
+                        ? "bg-accent text-white border-accent shadow-sm"
+                        : "bg-background text-muted-foreground border-border hover:border-accent hover:text-foreground"
                     }`}
                   >
                     <span>{cat.label}</span>
                     <span
                       className={`text-[10px] px-1.5 py-0.5 rounded-full ${
                         isActive
-                          ? "bg-background/20 text-background"
+                          ? "bg-white/20 text-white"
                           : "bg-muted text-muted-foreground"
                       }`}
                     >
@@ -385,9 +358,9 @@ const Services = () => {
               <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
                 <Link to="/contact" className="w-full sm:w-auto">
                   <Button
-                    className="bg-foreground hover:bg-foreground/90 text-background rounded-none h-14 px-8 text-[11px] font-black tracking-[0.25em] uppercase w-full sm:w-auto transition-all hover:scale-[1.02] active:scale-[0.98] shadow-none flex items-center justify-center gap-2.5"
+                    className="bg-accent hover:bg-accent/90 text-white rounded-none h-14 px-8 text-[11px] font-black tracking-[0.25em] uppercase w-full sm:w-auto transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md flex items-center justify-center gap-2.5"
                   >
-                    <Calendar className="h-4 w-4 text-accent" />
+                    <Calendar className="h-4 w-4 text-white" />
                     <span>Book Consultation</span>
                   </Button>
                 </Link>

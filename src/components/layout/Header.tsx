@@ -3,10 +3,12 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { services } from "@/data/services";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/derma-logo-transparent.png";
+
+import { DivisionSwitcher } from "./DivisionSwitcher";
 
 const navigation = [
-  { name: "Home", href: "/" },
+  { name: "Home", href: "/dermatology" },
   { name: "About", href: "/about" },
   { name: "Gallery", href: "/gallery" },
   { name: "Contact", href: "/contact" },
@@ -30,26 +32,32 @@ export const Header = () => {
     setServicesOpen(false);
   }, [location.pathname]);
 
-  const isActive = (href: string) => location.pathname === href;
+  const isActive = (href: string) => {
+    if (href === "/dermatology") {
+      return location.pathname === "/dermatology" || location.pathname === "/";
+    }
+    return location.pathname === href;
+  };
 
   return (
     <>
       <header
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-background/95 backdrop-blur-xl border-b border-border py-0"
-            : "bg-background/80 backdrop-blur-md border-b border-border/40 py-0"
+            ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-sm py-0"
+            : "bg-background/85 backdrop-blur-md border-b border-border/40 py-0"
         }`}
       >
+        <DivisionSwitcher />
         <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-16 sm:h-20">
 
             {/* Logo */}
-            <Link to="/" className="flex items-center shrink-0 group">
+            <Link to="/dermatology" className="flex items-center shrink-0 group py-1">
               <img
                 src={logo}
-                alt="Bosphorus Dermatology"
-                className="h-8 object-contain transition-opacity duration-200 group-hover:opacity-70"
+                alt="Bosphorus Dermatology & Aesthetic Center"
+                className="h-12 sm:h-14 md:h-16 w-auto object-contain transition-opacity duration-200 group-hover:opacity-80"
               />
             </Link>
 
@@ -127,9 +135,9 @@ export const Header = () => {
               <Link to="/contact" className="hidden md:block">
                 <Button
                   size="sm"
-                  className="rounded-none h-9 px-6 text-[10px] font-black tracking-[0.2em] bg-foreground hover:bg-foreground/90 text-background transition-all hover:scale-[1.02] active:scale-[0.98] shadow-none"
+                  className="rounded-none h-8 px-5 text-[10px] font-black tracking-widest bg-accent hover:bg-accent/90 text-white transition-all shadow-none"
                 >
-                  BOOK NOW
+                  BOOK
                 </Button>
               </Link>
 
@@ -152,7 +160,7 @@ export const Header = () => {
           mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
-        <div className="flex flex-col h-full pt-24 pb-12 px-8 overflow-y-auto">
+        <div className="flex flex-col h-full pt-28 pb-12 px-8 overflow-y-auto">
 
           {/* Primary links */}
           <nav className="flex flex-col gap-1 mb-10">
@@ -202,7 +210,7 @@ export const Header = () => {
             <Link to="/contact">
               <Button
                 size="lg"
-                className="w-full rounded-none h-14 text-[11px] font-black tracking-[0.25em] bg-foreground hover:bg-foreground/90 text-background shadow-none"
+                className="w-full rounded-none h-14 text-[11px] font-black tracking-[0.25em] bg-accent hover:bg-accent/90 text-white shadow-none"
               >
                 BOOK CONSULTATION
               </Button>
