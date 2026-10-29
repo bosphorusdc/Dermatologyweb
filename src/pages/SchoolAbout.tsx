@@ -39,7 +39,7 @@ export default function SchoolAbout() {
               </div>
 
               <div className="pt-8">
-                <Link to="/school/contact">
+                <Link to="/registration">
                   <Button
                     className="rounded-none h-12 px-8 text-[10px] font-black tracking-[0.2em] uppercase bg-foreground text-background hover:bg-foreground/90"
                   >

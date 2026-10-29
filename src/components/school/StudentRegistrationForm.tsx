@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Loader2, Sparkles, AlertCircle, Phone, User } from "lucide-react";
+import { CheckCircle2, Loader2, Sparkles, AlertCircle, Phone, User, BookOpen } from "lucide-react";
+import { REGISTERED_COURSES } from "@/data/school";
 
 interface StudentRegistrationFormProps {
   className?: string;
@@ -11,6 +12,7 @@ interface StudentRegistrationFormProps {
 export function StudentRegistrationForm({ className = "", onSuccess }: StudentRegistrationFormProps) {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState("Regular Full Intake (All 18 Certified Modules)");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -42,6 +44,7 @@ export function StudentRegistrationForm({ className = "", onSuccess }: StudentRe
             full_name: cleanName,
             phone_number: cleanPhone,
             status: "pending",
+            notes: `Program Interest: ${selectedCourse}`,
           },
         ]);
 
@@ -145,6 +148,32 @@ export function StudentRegistrationForm({ className = "", onSuccess }: StudentRe
               placeholder="e.g. +251 91 123 4567 or 0911..."
               className="w-full h-11 pl-10 pr-4 bg-background border border-border focus:border-accent focus:outline-none text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors"
             />
+          </div>
+        </div>
+
+        {/* Program / Course of Interest */}
+        <div>
+          <label className="block text-[11px] font-semibold text-foreground/80 tracking-wide uppercase mb-1.5">
+            Program / Course Interest <span className="text-muted-foreground text-[10px] font-normal lowercase">(optional)</span>
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted-foreground">
+              <BookOpen className="w-4 h-4" />
+            </div>
+            <select
+              value={selectedCourse}
+              onChange={(e) => setSelectedCourse(e.target.value)}
+              className="w-full h-11 pl-10 pr-4 bg-background border border-border focus:border-accent focus:outline-none text-xs text-foreground transition-colors cursor-pointer"
+            >
+              <option value="Regular Full Intake (All 18 Certified Modules)">
+                Regular Full Intake (All 18 Certified Modules) — Recommended
+              </option>
+              {REGISTERED_COURSES.map((course) => (
+                <option key={course.id} value={`#${course.id} ${course.title}`}>
+                  Module #{course.id}: {course.title} ({course.sessionType})
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 

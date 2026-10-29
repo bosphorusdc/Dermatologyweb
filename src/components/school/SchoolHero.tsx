@@ -145,7 +145,7 @@ export function SchoolHero({ onOpenEnrollModal }: SchoolHeroProps) {
 
             {/* CTAs matching emil-design-engineering-polish */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center lg:items-stretch w-full sm:w-auto">
-              <Link to="/school/contact" className="w-full sm:w-auto">
+              <Link to="/registration" className="w-full sm:w-auto">
                 <Button
                   size="lg"
                   className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground rounded-none h-14 px-10 text-[11px] font-black tracking-[0.25em] transition-all hover:scale-[1.02] active:scale-[0.98] group border-0 shadow-none uppercase flex items-center justify-center gap-2"

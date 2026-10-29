@@ -158,10 +158,10 @@ export function AmbassadorSection({
                       Bosphorus Partner
                     </span>
                     <Link
-                      to={isSchool ? "/school/admissions" : "/contact"}
+                      to={isSchool ? "/registration" : "/contact"}
                       className="inline-flex items-center gap-1.5 text-[10px] font-black tracking-widest text-accent uppercase hover:underline group/link"
                     >
-                      <span>{isSchool ? "Admissions" : "Consultation"}</span>
+                      <span>{isSchool ? "Apply Now" : "Consultation"}</span>
                       <ArrowRight className="w-3 h-3 group-hover/link:translate-x-0.5 transition-transform" />
                     </Link>
                   </div>

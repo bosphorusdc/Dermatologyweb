@@ -38,7 +38,7 @@ const VIDEOS: VideoShowcaseItem[] = [
       "Hear first-hand from a Bosphorus graduate about their transformative journey—from learning the foundational biology of cutaneous layers to mastering real patient procedures and stepping into a certified aesthetic career.",
     highlights: ["Clinical Confidence", "Doctor Mentorship", "Career Launchpad"],
     ctaText: "Apply for Next Intake",
-    ctaHref: "/school/admissions",
+    ctaHref: "/registration",
   },
 ];
 

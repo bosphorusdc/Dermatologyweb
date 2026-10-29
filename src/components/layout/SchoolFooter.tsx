@@ -40,6 +40,9 @@ export const SchoolFooter = () => {
             <Link to="/school/admissions" className="hover:text-foreground transition-colors">
               Admissions
             </Link>
+            <Link to="/registration" className="text-accent hover:underline font-semibold transition-colors">
+              Online Registration
+            </Link>
             <Link to="/school/about" className="hover:text-foreground transition-colors">
               About
             </Link>

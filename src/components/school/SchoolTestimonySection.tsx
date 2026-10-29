@@ -138,7 +138,7 @@ export function SchoolTestimonySection() {
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/school/admissions">
+                <Link to="/registration">
                   <Button
                     className="rounded-none h-12 px-8 text-[10px] font-black tracking-[0.2em] uppercase bg-accent hover:bg-accent/90 text-accent-foreground border-0"
                   >

@@ -55,7 +55,7 @@ export default function SchoolHome() {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link to="/school/contact">
+            <Link to="/registration">
               <Button
                 size="lg"
                 className="rounded-none h-12 px-8 text-[10px] font-black tracking-widest bg-white hover:bg-white/90 text-accent uppercase flex items-center gap-2 shadow-md"

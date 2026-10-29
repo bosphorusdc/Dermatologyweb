@@ -42,6 +42,19 @@ export default function SchoolCurriculum() {
                 <span>Clinical Portfolio Documentation</span>
               </div>
             </div>
+
+            <div className="pt-8 mt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>
+                <p className="font-heading text-lg font-light text-foreground">Ready to start your aesthetic certification?</p>
+                <p className="text-xs text-muted-foreground font-light">Seats are limited for each supervised clinical batch.</p>
+              </div>
+              <Link to="/registration">
+                <Button className="rounded-none h-11 px-8 text-[10px] font-black tracking-widest uppercase bg-accent hover:bg-accent/90 text-accent-foreground flex items-center gap-2 shadow-none">
+                  <GraduationCap className="w-4 h-4" />
+                  APPLY NOW
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

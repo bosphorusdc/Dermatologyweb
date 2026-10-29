@@ -17,6 +17,7 @@ import SchoolCurriculum from "./pages/SchoolCurriculum";
 import SchoolAdmissions from "./pages/SchoolAdmissions";
 import SchoolAbout from "./pages/SchoolAbout";
 import SchoolContact from "./pages/SchoolContact";
+import RegistrationPage from "./pages/RegistrationPage";
 import NotFound from "./pages/NotFound";
 import ClinicAdminPage from "./pages/admin/ClinicAdminPage";
 
@@ -31,6 +32,10 @@ const App = () => (
         <Routes>
           {/* Main Entry Hub / Dual-Category Home */}
           <Route path="/" element={<Home />} />
+
+          {/* Dedicated Registration Route (Only the Form) */}
+          <Route path="/registration" element={<RegistrationPage />} />
+          <Route path="/school/registration" element={<RegistrationPage />} />
 
           {/* Clinic CMS Routes (Self-Contained with Separate Auth) */}
           <Route path="/admin" element={<ClinicAdminPage />} />

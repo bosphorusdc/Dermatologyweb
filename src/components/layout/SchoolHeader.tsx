@@ -88,13 +88,13 @@ export const SchoolHeader = ({ onOpenEnrollModal }: SchoolHeaderProps) => {
                 <span>{SCHOOL_PHONE}</span>
               </a>
 
-              <Link to="/school/contact">
+              <Link to="/registration">
                 <Button
                   size="sm"
                   className="rounded-none h-8 px-4 text-[10px] font-black tracking-widest bg-accent hover:bg-accent/90 text-accent-foreground shadow-none uppercase flex items-center gap-1.5"
                 >
                   <GraduationCap className="w-3 h-3" />
-                  APPLY
+                  APPLY NOW
                 </Button>
               </Link>
 
@@ -160,7 +160,7 @@ export const SchoolHeader = ({ onOpenEnrollModal }: SchoolHeaderProps) => {
             <p className="text-xs text-muted-foreground">
               <strong className="text-foreground">Tel:</strong> {SCHOOL_PHONE}
             </p>
-            <Link to="/school/contact" className="w-full mt-2">
+            <Link to="/registration" onClick={() => setMobileOpen(false)} className="w-full mt-2">
               <Button
                 size="lg"
                 className="w-full rounded-none h-11 text-[10px] font-black tracking-widest bg-accent hover:bg-accent/90 text-accent-foreground shadow-none"
