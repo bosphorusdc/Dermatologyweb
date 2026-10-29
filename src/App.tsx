@@ -60,7 +60,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-      <ResponsiveDX />
+      {import.meta.env.DEV && <ResponsiveDX />}
     </TooltipProvider>
   </QueryClientProvider>
 );
