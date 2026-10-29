@@ -7,8 +7,8 @@ const melasmaAfter  = new URL("../../assets/Melasma before & after/photo_2026-03
 const bacteriaBefore = new URL("../../assets/skinbacteria infection b and f/photo_2026-03-25_13-18-56.jpg", import.meta.url).href;
 const bacteriaAfter  = new URL("../../assets/skinbacteria infection b and f/photo_2026-03-25_13-19-08.jpg", import.meta.url).href;
 
-const dandruffBefore = new URL("../../assets/Dandruff treatment before and after/photo_2026-03-25_13-15-25.jpg", import.meta.url).href;
-const dandruffAfter  = new URL("../../assets/Dandruff treatment before and after/photo_2026-03-25_13-15-34.jpg", import.meta.url).href;
+const dandruffBefore = new URL("../../assets/Dandruff treatment before and after/photo_2026-03-25_13-15-34.jpg", import.meta.url).href;
+const dandruffAfter  = new URL("../../assets/Dandruff treatment before and after/photo_2026-03-25_13-15-25.jpg", import.meta.url).href;
 
 const SLIDES = [
   {

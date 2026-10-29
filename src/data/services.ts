@@ -53,8 +53,8 @@ const serviceList: Service[] = [
       "Medically supervised protocol"
     ],
     images: {
-      before: new URL("../assets/Dandruff treatment before and after/photo_2026-03-25_13-15-25.jpg", import.meta.url).href,
-      after: new URL("../assets/Dandruff treatment before and after/photo_2026-03-25_13-15-34.jpg", import.meta.url).href,
+      before: new URL("../assets/Dandruff treatment before and after/photo_2026-03-25_13-15-34.jpg", import.meta.url).href,
+      after: new URL("../assets/Dandruff treatment before and after/photo_2026-03-25_13-15-25.jpg", import.meta.url).href,
     },
   },
   {
@@ -97,8 +97,8 @@ const serviceList: Service[] = [
       "Personalized treatment protocol"
     ],
     images: {
-      before: new URL("../assets/Melasma before & after/photo_2026-03-25_13-09-53.jpg", import.meta.url).href,
-      after: new URL("../assets/Melasma before & after/photo_2026-03-25_13-10-10.jpg", import.meta.url).href,
+      before: new URL("../assets/Melasma before & after/photo_2026-03-25_13-10-10.jpg", import.meta.url).href,
+      after: new URL("../assets/Melasma before & after/photo_2026-03-25_13-09-53.jpg", import.meta.url).href,
     },
   },
   {
